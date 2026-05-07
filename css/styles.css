@@ -3,40 +3,41 @@
    Romántico Floral Botánico · Paleta Francisca's Bridal
 ══════════════════════════════════════════════════════ */
 
-/* ── TOKENS — Paleta Francisca's Bridal ── */
+/* ── TOKENS — Paleta Rosa (hex exactos) ── */
 :root {
-  /* 5 colores base de la paleta */
-  --choco:        #231213;   /* espresso oscuro  */
-  --mauve:        #5E3438;   /* mauve profundo    */
-  --dusty:        #A87274;   /* rosa polvoso      */
-  --blush-pink:   #CBA4A6;   /* rosa suave        */
-  --blush-light:  #EDD3D4;   /* blush muy claro   */
-  --blush-white:  #FAF3F3;
-  --blush-cream:  #FDF7F7;
+  --choco:        #3D2020;   /* oscuro base       */
+  --mauve:        #805152;   /* mauve oscuro      */
+  --dusty:        #A56C6C;   /* rosa polvoso      */
+  --rosa-deep:    #C38888;   /* rosa medio-oscuro */
+  --dusty-mid:    #E0A2A2;   /* rosa medio        */
+  --blush-pink:   #F3B6B6;   /* rosa suave        */
+  --blush-light:  #FFD7D7;   /* blush claro       */
+  --blush-white:  #FFF0F0;
+  --blush-cream:  #FFF8F8;
 
-  --rosa-dark:    #5E3438;
-  --rosa-deep:    #A87274;
-  --rosa-mid:     #CBA4A6;
-  --rosa-pale:    #DFC0C1;
+  --rosa-dark:    #805152;
+  --rosa-mid:     #E0A2A2;
+  --rosa-pale:    #F3B6B6;
 
   --gold:         #C9A96E;
   --gold-light:   #E2C99A;
   --gold-pale:    #F5EACC;
 
-  --dark-text:    #231213;
-  --mid-text:     #5E3438;
-  --light-text:   #A87274;
+  --dark-text:    #3D2020;
+  --mid-text:     #805152;
+  --light-text:   #A56C6C;
   --white:        #FFFFFF;
 
   --font-script:  'Great Vibes', cursive;
   --font-serif:   'Cormorant Garamond', serif;
   --font-body:    'Montserrat', sans-serif;
+  --font-sans:    'Montserrat', sans-serif;
 
   --radius:    14px;
   --radius-lg: 28px;
-  --shadow-sm: 0 4px 20px rgba(94,52,56,0.10);
-  --shadow-md: 0 8px 36px rgba(94,52,56,0.18);
-  --shadow-lg: 0 20px 60px rgba(94,52,56,0.26);
+  --shadow-sm: 0 4px 20px rgba(128,81,82,0.10);
+  --shadow-md: 0 8px 36px rgba(128,81,82,0.18);
+  --shadow-lg: 0 20px 60px rgba(128,81,82,0.26);
 
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
@@ -271,7 +272,7 @@ body   {
     radial-gradient(ellipse at 15% 80%, rgba(168,120,120,0.55) 0%, transparent 40%),
     radial-gradient(ellipse at 85% 20%, rgba(122,72,72,0.50) 0%, transparent 40%),
     radial-gradient(ellipse at 50% 50%, rgba(44,24,24,0.30) 0%, transparent 60%),
-    linear-gradient(155deg, #150b0c 0%, #231213 35%, #3A1E20 65%, #231213 100%);
+    linear-gradient(155deg, #2A1515 0%, #3D2020 35%, #5E3030 65%, #3D2020 100%);
   z-index: 0;
 }
 
@@ -795,7 +796,7 @@ body   {
     radial-gradient(ellipse at 88% 12%, rgba(122,72,72,0.55) 0%, transparent 42%),
     radial-gradient(ellipse at 60% 75%, rgba(201,169,110,0.18) 0%, transparent 38%),
     radial-gradient(ellipse at 35% 25%, rgba(237,216,216,0.12) 0%, transparent 38%),
-    linear-gradient(155deg, #150b0c 0%, #231213 38%, #3A1E20 68%, #1a0e0f 100%);
+    linear-gradient(155deg, #2A1515 0%, #3D2020 38%, #5E3030 68%, #2A1515 100%);
 }
 
 /* Falling petals in hero */
@@ -1171,7 +1172,7 @@ body   {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #231213 0%, #3D2226 35%, #5E3438 70%, #A87274 100%);
+  background: linear-gradient(135deg, #3D2020 0%, #5E3030 35%, #805152 70%, #A56C6C 100%);
 }
 
 .section-countdown::after {
@@ -1921,7 +1922,7 @@ body   {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #150b0c 0%, #231213 40%, #3D2226 70%, #231213 100%);
+  background: linear-gradient(135deg, #2A1515 0%, #3D2020 40%, #5E3030 70%, #3D2020 100%);
 }
 
 .site-footer::after {
