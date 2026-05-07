@@ -43,10 +43,31 @@
      VIDEO INTRO
 ══════════════════════════════════════════════ -->
 <div id="videoIntro" class="video-intro">
+  <!-- Video -->
   <video id="introVideo" class="intro-video" src="assets/images/VideoIntro.mp4"
-    autoplay muted playsinline preload="auto"></video>
+    muted playsinline preload="auto" loop></video>
+
+  <!-- Capa tenue sobre el video -->
   <div class="intro-overlay-grad"></div>
-  <button class="intro-skip" id="introSkip">Saltar ›</button>
+
+  <!-- Pétalos cayendo -->
+  <div class="intro-petals" id="introPetals"></div>
+
+  <!-- Pantalla "toca para comenzar" -->
+  <div class="intro-tap" id="introTap">
+    <div class="intro-tap-inner">
+      <p class="intro-tap-fecha">09 · 08 · 2026</p>
+      <h1 class="intro-tap-names">Wilmar <span>&amp;</span> Danitza</h1>
+      <p class="intro-tap-sub">Los invitamos a nuestra boda</p>
+      <button class="intro-tap-btn" id="introTapBtn">
+        <span class="tap-icon">♡</span>
+        <span>Toca para abrir</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Botón saltar (visible solo cuando el video está corriendo) -->
+  <button class="intro-skip" id="introSkip" style="display:none">Saltar ›</button>
 </div>
 
 <!-- ══════════════════════════════════════════════

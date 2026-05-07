@@ -70,16 +70,18 @@ body   {
 /* ══════════════════════════════════════════════
    ENVELOPE OVERLAY
 ══════════════════════════════════════════════ */
-/* ── VIDEO INTRO ── */
+/* ══════════════════════════════════════════════
+   VIDEO INTRO
+══════════════════════════════════════════════ */
 .video-intro {
   position: fixed;
   inset: 0;
   z-index: 1100;
-  background: #000;
+  background: #0d0809;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 1s ease, visibility 1s ease;
+  transition: opacity 1.2s ease, visibility 1.2s ease;
 }
 
 .video-intro.hidden {
@@ -89,41 +91,152 @@ body   {
 }
 
 .intro-video {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.2s ease;
 }
 
+.intro-video.playing { opacity: 1; }
+
+/* Capa tenue rosada sobre el video */
 .intro-overlay-grad {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom,
-    rgba(0,0,0,0.15) 0%,
-    transparent 30%,
-    transparent 70%,
-    rgba(0,0,0,0.5) 100%);
+  background:
+    linear-gradient(to bottom,
+      rgba(20,10,12,0.55) 0%,
+      rgba(100,50,60,0.18) 40%,
+      rgba(100,50,60,0.18) 60%,
+      rgba(20,10,12,0.70) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Contenedor de pétalos */
+.intro-petals {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* Pantalla "toca para comenzar" */
+.intro-tap {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #1a0d10 0%, #2c1520 55%, #1a0d10 100%);
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.intro-tap.hidden {
+  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
 }
 
+.intro-tap-inner {
+  text-align: center;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.intro-tap-fecha {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.28em;
+  color: rgba(201,169,110,0.75);
+  text-transform: uppercase;
+}
+
+.intro-tap-names {
+  font-family: var(--font-script);
+  font-size: clamp(2.8rem, 9vw, 5rem);
+  color: #f5ede8;
+  line-height: 1.05;
+  text-shadow: 0 4px 32px rgba(201,123,138,0.35);
+}
+
+.intro-tap-names span {
+  color: #C9A96E;
+  font-size: 0.75em;
+}
+
+.intro-tap-sub {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(0.85rem, 2.2vw, 1rem);
+  color: rgba(245,237,232,0.5);
+  letter-spacing: 0.1em;
+  margin-bottom: 1.2rem;
+}
+
+.intro-tap-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 2rem;
+  border-radius: 99px;
+  border: 1px solid rgba(201,169,110,0.45);
+  background: rgba(201,169,110,0.08);
+  color: rgba(245,237,232,0.9);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.25s, border-color 0.25s, transform 0.2s;
+  animation: tapPulse 2.5s ease-in-out infinite;
+}
+
+.intro-tap-btn:hover {
+  background: rgba(201,169,110,0.18);
+  border-color: rgba(201,169,110,0.7);
+  transform: scale(1.04);
+  animation: none;
+}
+
+.tap-icon {
+  font-size: 1.1em;
+  color: #C9A96E;
+}
+
+@keyframes tapPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,169,110,0.0); }
+  50%       { box-shadow: 0 0 0 8px rgba(201,169,110,0.12); }
+}
+
+/* Botón saltar */
 .intro-skip {
   position: absolute;
-  bottom: 2rem;
+  bottom: 1.75rem;
   right: 1.5rem;
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.3);
-  color: rgba(255,255,255,0.85);
+  z-index: 11;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.22);
+  color: rgba(255,255,255,0.75);
   font-family: var(--font-sans);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   letter-spacing: 0.08em;
-  padding: 0.5rem 1.1rem;
+  padding: 0.45rem 1rem;
   border-radius: 99px;
   cursor: pointer;
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(8px);
   transition: background 0.2s, color 0.2s;
 }
 
 .intro-skip:hover {
-  background: rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.15);
   color: #fff;
 }
 

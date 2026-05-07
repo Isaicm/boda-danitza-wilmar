@@ -15,27 +15,54 @@ const WEDDING_DATE = new Date('2026-08-09T17:00:00-05:00');
 
 // ── VIDEO INTRO ───────────────────────────────────────────
 (function initVideoIntro() {
-  var intro    = document.getElementById('videoIntro');
-  var video    = document.getElementById('introVideo');
-  var skipBtn  = document.getElementById('introSkip');
-  var envelope = document.getElementById('envelopeOverlay');
+  var intro      = document.getElementById('videoIntro');
+  var video      = document.getElementById('introVideo');
+  var tapScreen  = document.getElementById('introTap');
+  var tapBtn     = document.getElementById('introTapBtn');
+  var skipBtn    = document.getElementById('introSkip');
+  var petalsWrap = document.getElementById('introPetals');
+  var envelope   = document.getElementById('envelopeOverlay');
 
   if (!intro || !video) return;
 
   function showEnvelope() {
     intro.classList.add('hidden');
-    envelope.style.opacity    = '';
+    envelope.style.transition = 'opacity 1s ease';
+    envelope.style.opacity    = '1';
     envelope.style.pointerEvents = '';
-    envelope.style.transition = 'opacity 0.9s ease';
-    // Pequeño delay para que el fade del intro termine antes de mostrarse
-    setTimeout(function () { envelope.style.opacity = '1'; }, 50);
   }
 
-  video.addEventListener('ended', showEnvelope);
+  function startIntro() {
+    // Ocultar pantalla de toque
+    tapScreen.classList.add('hidden');
+
+    // Reproducir video y mostrar con fade
+    video.play().catch(function () {});
+    video.classList.add('playing');
+
+    // Mostrar botón saltar
+    if (skipBtn) skipBtn.style.display = '';
+
+    // Arrancar música (gesto del usuario confirmado)
+    if (typeof window.startMusic === 'function') window.startMusic();
+
+    // Pétalos sobre el video
+    spawnPetals(petalsWrap, 20, 'petalFall');
+  }
+
+  if (tapBtn) tapBtn.addEventListener('click', startIntro);
+
+  // Saltar: termina el video y va al sobre
   if (skipBtn) skipBtn.addEventListener('click', showEnvelope);
 
-  // Fallback: si el video no carga (sin conexión, formato no soportado), mostrar el sobre
-  video.addEventListener('error', showEnvelope);
+  // Video terminado → sobre
+  video.addEventListener('ended', showEnvelope);
+
+  // Fallback si el video falla
+  video.addEventListener('error', function () {
+    tapScreen.classList.add('hidden');
+    showEnvelope();
+  });
 })();
 
 // ── NOMBRE DEL INVITADO (leído desde ?para=Nombre+Apellido) ──
