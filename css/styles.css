@@ -251,6 +251,7 @@ body   {
   flex-direction: column;
   gap: 2.5rem;
   overflow: hidden;
+  padding-top: 12vh;
   transition: opacity 1.1s var(--ease-smooth), visibility 1.1s;
 }
 
