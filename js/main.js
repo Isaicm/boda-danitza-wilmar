@@ -23,7 +23,14 @@ const GUEST_NAME = (function () {
 (function applyGuestName() {
   if (!GUEST_NAME) return;
 
-  // Tarjeta del sobre
+  // Frente del sobre
+  var envelopeTo = document.getElementById('envelopeTo');
+  if (envelopeTo) {
+    envelopeTo.textContent = 'Para: ' + GUEST_NAME;
+    setTimeout(function () { envelopeTo.classList.add('visible'); }, 400);
+  }
+
+  // Tarjeta interior del sobre
   var cardPara = document.getElementById('cardPara');
   if (cardPara) cardPara.textContent = 'Para: ' + GUEST_NAME;
 
