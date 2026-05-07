@@ -5,7 +5,7 @@
 
 'use strict';
 
-var YT_VIDEO_ID  = 'jb0K64SGsfc';
+var YT_VIDEO_ID  = '-E5ovOA9VM8';
 var ytPlayer     = null;
 var ytReady      = false;
 var musicPlaying = false;
@@ -50,8 +50,9 @@ function pauseMusic() {
   if (musicBtn)  { musicBtn.classList.remove('playing'); musicBtn.title = 'Reproducir música'; }
 }
 
-/* ── Callback global que YouTube llama cuando la API está lista ── */
-window.onYouTubeIframeAPIReady = function () {
+/* ── Crea el player de YouTube ── */
+function createYTPlayer() {
+  if (ytPlayer) return;
   ytPlayer = new YT.Player('yt-player', {
     videoId: YT_VIDEO_ID,
     playerVars: {
@@ -69,7 +70,6 @@ window.onYouTubeIframeAPIReady = function () {
       onReady: function (e) {
         ytReady = true;
         e.target.setVolume(0);
-        /* Si el usuario ya hizo clic en el sobre antes de que el player estuviese listo */
         if (_autoplayPending) playMusic();
       },
       onStateChange: function (e) {
@@ -77,7 +77,13 @@ window.onYouTubeIframeAPIReady = function () {
       }
     }
   });
-};
+}
+
+/* ── Callback global que YouTube llama cuando la API está lista ── */
+window.onYouTubeIframeAPIReady = function () { createYTPlayer(); };
+
+/* ── Fallback: si la API ya estaba cargada antes de que este script corriera ── */
+if (window.YT && window.YT.Player) { createYTPlayer(); }
 
 /* ── API pública: se llama desde main.js cuando el usuario abre el sobre ── */
 window.startMusic = function () {
