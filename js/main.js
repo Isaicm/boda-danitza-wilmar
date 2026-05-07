@@ -614,7 +614,6 @@ function spawnSobresRain() {
 
     const data = {
       nombre: form.nombre.value.trim(),
-      email: form.email.value.trim(),
       asistencia: form.asistencia.value,
       invitados: form.invitados.value || '0',
       mensaje: form.mensaje.value.trim()
