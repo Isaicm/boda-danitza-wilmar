@@ -13,6 +13,31 @@ const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyvZ8Djt3nUka7UhW6JN
 // ── WEDDING DATE (Colombia UTC-5, sin DST) ────────────────
 const WEDDING_DATE = new Date('2026-08-09T17:00:00-05:00');
 
+// ── VIDEO INTRO ───────────────────────────────────────────
+(function initVideoIntro() {
+  var intro    = document.getElementById('videoIntro');
+  var video    = document.getElementById('introVideo');
+  var skipBtn  = document.getElementById('introSkip');
+  var envelope = document.getElementById('envelopeOverlay');
+
+  if (!intro || !video) return;
+
+  function showEnvelope() {
+    intro.classList.add('hidden');
+    envelope.style.opacity    = '';
+    envelope.style.pointerEvents = '';
+    envelope.style.transition = 'opacity 0.9s ease';
+    // Pequeño delay para que el fade del intro termine antes de mostrarse
+    setTimeout(function () { envelope.style.opacity = '1'; }, 50);
+  }
+
+  video.addEventListener('ended', showEnvelope);
+  if (skipBtn) skipBtn.addEventListener('click', showEnvelope);
+
+  // Fallback: si el video no carga (sin conexión, formato no soportado), mostrar el sobre
+  video.addEventListener('error', showEnvelope);
+})();
+
 // ── NOMBRE DEL INVITADO (leído desde ?para=Nombre+Apellido) ──
 const GUEST_NAME = (function () {
   var raw = new URLSearchParams(window.location.search).get('para') || '';

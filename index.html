@@ -40,9 +40,19 @@
 <body>
 
 <!-- ══════════════════════════════════════════════
+     VIDEO INTRO
+══════════════════════════════════════════════ -->
+<div id="videoIntro" class="video-intro">
+  <video id="introVideo" class="intro-video" src="assets/images/VideoIntro.mp4"
+    autoplay muted playsinline preload="auto"></video>
+  <div class="intro-overlay-grad"></div>
+  <button class="intro-skip" id="introSkip">Saltar ›</button>
+</div>
+
+<!-- ══════════════════════════════════════════════
      SOBRE DE APERTURA
 ══════════════════════════════════════════════ -->
-<div id="envelopeOverlay" class="envelope-overlay">
+<div id="envelopeOverlay" class="envelope-overlay" style="opacity:0;pointer-events:none;">
   <div class="env-petals" id="envPetals"></div>
   <div class="welcome-ambient" aria-hidden="true">
     <div class="welcome-photo-ghost">
