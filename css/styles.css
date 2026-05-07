@@ -3,28 +3,29 @@
    Romántico Floral Botánico · Paleta Francisca's Bridal
 ══════════════════════════════════════════════════════ */
 
-/* ── TOKENS ── */
+/* ── TOKENS — Paleta Francisca's Bridal ── */
 :root {
-  --choco:        #2C1818;
-  --mauve:        #7A4848;
-  --dusty:        #A87878;
-  --blush-pink:   #CCA8A8;
-  --blush-light:  #EDD8D8;
-  --blush-white:  #FBF3F3;
-  --blush-cream:  #FDF6F6;
+  /* 5 colores base de la paleta */
+  --choco:        #231213;   /* espresso oscuro  */
+  --mauve:        #5E3438;   /* mauve profundo    */
+  --dusty:        #A87274;   /* rosa polvoso      */
+  --blush-pink:   #CBA4A6;   /* rosa suave        */
+  --blush-light:  #EDD3D4;   /* blush muy claro   */
+  --blush-white:  #FAF3F3;
+  --blush-cream:  #FDF7F7;
 
-  --rosa-dark:    #7A4848;
-  --rosa-deep:    #A87878;
-  --rosa-mid:     #CCA8A8;
-  --rosa-pale:    #E0C0C0;
+  --rosa-dark:    #5E3438;
+  --rosa-deep:    #A87274;
+  --rosa-mid:     #CBA4A6;
+  --rosa-pale:    #DFC0C1;
 
   --gold:         #C9A96E;
   --gold-light:   #E2C99A;
   --gold-pale:    #F5EACC;
 
-  --dark-text:    #2C1818;
-  --mid-text:     #6A4040;
-  --light-text:   #A88888;
+  --dark-text:    #231213;
+  --mid-text:     #5E3438;
+  --light-text:   #A87274;
   --white:        #FFFFFF;
 
   --font-script:  'Great Vibes', cursive;
@@ -33,9 +34,9 @@
 
   --radius:    14px;
   --radius-lg: 28px;
-  --shadow-sm: 0 4px 20px rgba(122,72,72,0.10);
-  --shadow-md: 0 8px 36px rgba(122,72,72,0.18);
-  --shadow-lg: 0 20px 60px rgba(122,72,72,0.26);
+  --shadow-sm: 0 4px 20px rgba(94,52,56,0.10);
+  --shadow-md: 0 8px 36px rgba(94,52,56,0.18);
+  --shadow-lg: 0 20px 60px rgba(94,52,56,0.26);
 
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
@@ -270,7 +271,7 @@ body   {
     radial-gradient(ellipse at 15% 80%, rgba(168,120,120,0.55) 0%, transparent 40%),
     radial-gradient(ellipse at 85% 20%, rgba(122,72,72,0.50) 0%, transparent 40%),
     radial-gradient(ellipse at 50% 50%, rgba(44,24,24,0.30) 0%, transparent 60%),
-    linear-gradient(155deg, #1a0a0a 0%, #2C1818 35%, #3D2020 65%, #2C1818 100%);
+    linear-gradient(155deg, #150b0c 0%, #231213 35%, #3A1E20 65%, #231213 100%);
   z-index: 0;
 }
 
@@ -794,7 +795,7 @@ body   {
     radial-gradient(ellipse at 88% 12%, rgba(122,72,72,0.55) 0%, transparent 42%),
     radial-gradient(ellipse at 60% 75%, rgba(201,169,110,0.18) 0%, transparent 38%),
     radial-gradient(ellipse at 35% 25%, rgba(237,216,216,0.12) 0%, transparent 38%),
-    linear-gradient(155deg, #180a0a 0%, #2C1818 38%, #3D2020 68%, #241212 100%);
+    linear-gradient(155deg, #150b0c 0%, #231213 38%, #3A1E20 68%, #1a0e0f 100%);
 }
 
 /* Falling petals in hero */
@@ -1170,7 +1171,7 @@ body   {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #2C1818 0%, #4A2828 35%, #7A4848 70%, #A87878 100%);
+  background: linear-gradient(135deg, #231213 0%, #3D2226 35%, #5E3438 70%, #A87274 100%);
 }
 
 .section-countdown::after {
@@ -1920,7 +1921,7 @@ body   {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #1a0808 0%, #2C1818 40%, #4A2828 70%, #2C1818 100%);
+  background: linear-gradient(135deg, #150b0c 0%, #231213 40%, #3D2226 70%, #231213 100%);
 }
 
 .site-footer::after {
