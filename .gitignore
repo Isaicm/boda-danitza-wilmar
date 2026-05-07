@@ -1,3 +1,8 @@
 .DS_Store
+._*
+._.git
+._.gitignore
+._.claude
 Thumbs.db
 *.log
+.claude/
