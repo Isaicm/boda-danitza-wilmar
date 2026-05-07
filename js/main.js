@@ -328,18 +328,18 @@ function initScrollObservers() {
     '.reveal-item, .schedule-item, .sobre-card'
   ).forEach(function (el) { io.observe(el); });
 
-  // Polaroids — entrada escalonada al hacer scroll
-  var polaroids = Array.from(document.querySelectorAll('.polaroid'));
-  var poIo = new IntersectionObserver(function (entries) {
+  // Scrapbook — entrada escalonada al hacer scroll
+  var scraps = Array.from(document.querySelectorAll('.scrap'));
+  var scrapIo = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (!entry.isIntersecting) return;
       var el = entry.target;
-      var delay = polaroids.indexOf(el) * 80;
+      var delay = scraps.indexOf(el) * 90;
       setTimeout(function () { el.classList.add('visible'); }, delay);
-      poIo.unobserve(el);
+      scrapIo.unobserve(el);
     });
-  }, { rootMargin: '0px 0px -60px 0px', threshold: 0.1 });
-  polaroids.forEach(function (el) { poIo.observe(el); });
+  }, { rootMargin: '0px 0px -60px 0px', threshold: 0.08 });
+  scraps.forEach(function (el) { scrapIo.observe(el); });
 
   // --- GSAP ScrollTrigger for section titles and countdown ---
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
@@ -399,7 +399,7 @@ function initScrollObservers() {
   const btnClose = document.getElementById('lightboxClose');
   const btnPrev = document.getElementById('lightboxPrev');
   const btnNext = document.getElementById('lightboxNext');
-  const galleryItems = Array.from(document.querySelectorAll('.polaroid'));
+  const galleryItems = Array.from(document.querySelectorAll('.scrap'));
 
   let currentIndex = 0;
 

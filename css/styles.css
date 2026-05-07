@@ -1401,100 +1401,111 @@ body   {
   pointer-events: none;
 }
 
-/* ── POLAROID WALL ── */
-.polaroid-wall {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.8rem 1.2rem;
-  padding: 2.5rem 1rem 3rem;
+/* ── SCRAPBOOK ── */
+.scrapbook {
   position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  padding: 2rem 0.5rem 3rem;
+  background:
+    linear-gradient(135deg, #fdf6f0 0%, #faeee8 50%, #fdf3f0 100%);
+  border-radius: 16px;
+  margin-top: 2rem;
+  overflow: visible;
 }
 
-/* Rotaciones alternas para 12 fotos */
-.polaroid:nth-child(1)  { --r:  3deg; }
-.polaroid:nth-child(2)  { --r: -4deg; }
-.polaroid:nth-child(3)  { --r:  2deg; }
-.polaroid:nth-child(4)  { --r: -3deg; }
-.polaroid:nth-child(5)  { --r:  5deg; }
-.polaroid:nth-child(6)  { --r: -2deg; }
-.polaroid:nth-child(7)  { --r:  4deg; }
-.polaroid:nth-child(8)  { --r: -5deg; }
-.polaroid:nth-child(9)  { --r:  1deg; }
-.polaroid:nth-child(10) { --r: -4deg; }
-.polaroid:nth-child(11) { --r:  3deg; }
-.polaroid:nth-child(12) { --r: -2deg; }
+/* Rotaciones y offsets individuales para efecto orgánico */
+.scrap:nth-child(1)  { --r: -4deg;  --tx: 8px;   --ty: 12px;  }
+.scrap:nth-child(2)  { --r:  3deg;  --tx: -6px;  --ty: 6px;   }
+.scrap:nth-child(3)  { --r: -2deg;  --tx: 10px;  --ty: -8px;  }
+.scrap:nth-child(4)  { --r:  5deg;  --tx: -12px; --ty: 10px;  }
+.scrap:nth-child(5)  { --r: -3deg;  --tx: 6px;   --ty: -6px;  }
+.scrap:nth-child(6)  { --r:  2deg;  --tx: -8px;  --ty: 14px;  }
+.scrap:nth-child(7)  { --r:  4deg;  --tx: 10px;  --ty: 8px;   }
+.scrap:nth-child(8)  { --r: -5deg;  --tx: -4px;  --ty: -10px; }
+.scrap:nth-child(9)  { --r:  1deg;  --tx: 12px;  --ty: 6px;   }
+.scrap:nth-child(10) { --r: -3deg;  --tx: -10px; --ty: 8px;   }
+.scrap:nth-child(11) { --r:  4deg;  --tx: 6px;   --ty: -4px;  }
+.scrap:nth-child(12) { --r: -2deg;  --tx: -8px;  --ty: 10px;  }
 
-.polaroid {
-  background: #fff;
-  padding: 0.65rem 0.65rem 2.4rem;
-  box-shadow:
-    0 4px 8px rgba(128,81,82,0.10),
-    0 12px 32px rgba(128,81,82,0.14),
-    0 1px 2px rgba(0,0,0,0.06);
-  transform: rotate(var(--r, 2deg));
+/* Tamaños */
+.scrap-sm  { --h: clamp(140px, 22vw, 180px); }
+.scrap-md  { --h: clamp(170px, 27vw, 220px); }
+.scrap-lg  { --h: clamp(200px, 32vw, 260px); }
+
+.scrap {
+  position: relative;
+  height: var(--h, 200px);
+  overflow: visible;
+  opacity: 0;
+  transform: rotate(var(--r, 0deg)) translate(var(--tx, 0), var(--ty, 0)) scale(0.9);
   transition:
-    transform 0.35s var(--ease-bounce),
-    box-shadow 0.35s ease;
+    opacity 0.6s ease,
+    transform 0.6s var(--ease-bounce),
+    box-shadow 0.3s ease,
+    z-index 0s;
   cursor: zoom-in;
-  width: clamp(160px, 28vw, 220px);
-  flex-shrink: 0;
-  position: relative;
+  z-index: 1;
 }
 
-.polaroid:hover {
-  transform: rotate(0deg) translateY(-10px) scale(1.05);
-  box-shadow:
-    0 16px 48px rgba(128,81,82,0.22),
-    0 4px 12px rgba(0,0,0,0.10);
-  z-index: 10;
+.scrap.visible {
+  opacity: 1;
+  transform: rotate(var(--r, 0deg)) translate(var(--tx, 0), var(--ty, 0)) scale(1);
 }
 
-.polaroid-img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
+.scrap:hover {
+  transform: rotate(0deg) translate(0, -12px) scale(1.08) !important;
+  z-index: 20;
 }
 
-.polaroid-img img {
+.scrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s var(--ease-smooth);
   display: block;
+  box-shadow:
+    0 6px 20px rgba(128,81,82,0.18),
+    0 2px 6px rgba(0,0,0,0.10);
+  transition: box-shadow 0.3s ease;
 }
 
-.polaroid:hover .polaroid-img img {
-  transform: scale(1.06);
+.scrap:hover img {
+  box-shadow:
+    0 20px 50px rgba(128,81,82,0.28),
+    0 6px 16px rgba(0,0,0,0.14);
 }
 
-.polaroid-caption {
-  text-align: center;
-  font-family: var(--font-script);
-  font-size: 1.3rem;
-  color: var(--dusty);
-  margin-top: 0.5rem;
-  line-height: 1;
-  user-select: none;
+/* Cinta adhesiva — esquina superior de cada foto */
+.scrap::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(var(--r, 0deg));
+  width: 48px;
+  height: 22px;
+  background: rgba(255,215,215,0.75);
+  border: 1px solid rgba(203,164,166,0.35);
+  backdrop-filter: blur(2px);
+  border-radius: 2px;
+  z-index: 5;
+  box-shadow: 0 1px 4px rgba(128,81,82,0.10);
 }
 
-/* Entrada animada — cada polaroid cae desde arriba */
-.polaroid {
-  opacity: 0;
-  transform: rotate(var(--r, 2deg)) translateY(-30px);
-  transition:
-    opacity 0.55s ease,
-    transform 0.55s var(--ease-bounce),
-    box-shadow 0.35s ease;
-}
-
-.polaroid.visible {
-  opacity: 1;
-  transform: rotate(var(--r, 2deg)) translateY(0);
-}
-
-.polaroid.visible:hover {
-  transform: rotate(0deg) translateY(-10px) scale(1.05);
+/* Segunda cinta en algunas fotos (esquinas alternas) */
+.scrap:nth-child(odd)::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  right: 18%;
+  transform: rotate(calc(var(--r, 0deg) * -1.5));
+  width: 36px;
+  height: 18px;
+  background: rgba(243,182,182,0.65);
+  border: 1px solid rgba(203,164,166,0.3);
+  border-radius: 2px;
+  z-index: 5;
 }
 
 /* ── LIGHTBOX ── */
