@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generar Invitaciones — Boda Danitza &amp; Wilmar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a0d10 0%, #2c1520 50%, #1a0d10 100%);
+      font-family: 'Lato', sans-serif;
+      color: #f5ede8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    header h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.2rem, 6vw, 3.2rem);
+      color: #C9A96E;
+      line-height: 1.1;
+    }
+
+    header p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: rgba(245,237,232,0.6);
+      margin-top: 0.4rem;
+      letter-spacing: 0.08em;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(201,169,110,0.2);
+      border-radius: 16px;
+      padding: 2rem 2rem 2.25rem;
+      width: 100%;
+      max-width: 520px;
+      margin-bottom: 2rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,237,232,0.55);
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(201,169,110,0.3);
+      background: rgba(255,255,255,0.06);
+      color: #f5ede8;
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #C9A96E;
+      box-shadow: 0 0 0 3px rgba(201,169,110,0.15);
+    }
+
+    input[type="text"]::placeholder { color: rgba(245,237,232,0.3); }
+
+    .btn-add {
+      margin-top: 1rem;
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(135deg, #C9A96E, #a8845a);
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .btn-add:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-add:active { transform: translateY(0); }
+
+    /* Lista de invitados */
+    .list-header {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: rgba(245,237,232,0.7);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .list-header span {
+      font-size: 0.8rem;
+      color: #C9A96E;
+      font-family: 'Lato', sans-serif;
+      letter-spacing: 0.06em;
+    }
+
+    #guestList {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      max-height: 55vh;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    #guestList::-webkit-scrollbar { width: 4px; }
+    #guestList::-webkit-scrollbar-track { background: transparent; }
+    #guestList::-webkit-scrollbar-thumb { background: rgba(201,169,110,0.3); border-radius: 4px; }
+
+    .guest-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,169,110,0.12);
+      border-radius: 10px;
+      padding: 0.65rem 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .guest-name {
+      flex: 1;
+      font-size: 0.97rem;
+      color: #f5ede8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .guest-link {
+      font-size: 0.78rem;
+      color: rgba(245,237,232,0.4);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 160px;
+      flex-shrink: 0;
+    }
+
+    .btn-copy {
+      flex-shrink: 0;
+      padding: 0.32rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid rgba(201,169,110,0.4);
+      background: transparent;
+      color: #C9A96E;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-copy:hover { background: rgba(201,169,110,0.15); }
+    .btn-copy.copied { background: rgba(100,180,100,0.15); color: #8ecf8e; border-color: #8ecf8e; }
+
+    .btn-delete {
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      color: rgba(245,237,232,0.25);
+      font-size: 1rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0 0.1rem;
+      transition: color 0.2s;
+    }
+    .btn-delete:hover { color: rgba(230,100,100,0.7); }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem 0;
+      color: rgba(245,237,232,0.3);
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      margin-top: auto;
+      text-align: center;
+      font-size: 0.78rem;
+      color: rgba(245,237,232,0.25);
+      letter-spacing: 0.06em;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Wilmar &amp; Danitza</h1>
+    <p>Generador de invitaciones personalizadas</p>
+  </header>
+
+  <!-- Agregar invitado -->
+  <div class="card">
+    <label for="inputNombre">Nombre del invitado</label>
+    <input type="text" id="inputNombre" placeholder="Ej: Daniel Cortés" autocomplete="off" />
+    <button class="btn-add" id="btnAdd">Generar link →</button>
+  </div>
+
+  <!-- Lista -->
+  <div class="card">
+    <div class="list-header">
+      Invitados generados
+      <span id="countLabel">0 links</span>
+    </div>
+    <ul id="guestList">
+      <li class="empty-state" id="emptyState">Agrega el primer invitado arriba</li>
+    </ul>
+  </div>
+
+  <footer>Boda · 9 de Agosto 2026 · Hacienda Castellazo, Cali</footer>
+
+  <script>
+    // ── Detecta si la página está en un servidor local o en archivo
+    var BASE_URL = (function () {
+      var loc = window.location;
+      // Si están en la misma carpeta, construye la URL de index.html
+      return loc.protocol + '//' + loc.host + loc.pathname.replace('generar.html', 'index.html');
+    })();
+
+    var guests  = JSON.parse(localStorage.getItem('boda_guests') || '[]');
+    var input   = document.getElementById('inputNombre');
+    var list    = document.getElementById('guestList');
+    var count   = document.getElementById('countLabel');
+    var empty   = document.getElementById('emptyState');
+
+    function buildLink(name) {
+      return BASE_URL + '?para=' + encodeURIComponent(name);
+    }
+
+    function save() {
+      localStorage.setItem('boda_guests', JSON.stringify(guests));
+    }
+
+    function render() {
+      count.textContent = guests.length + (guests.length === 1 ? ' link' : ' links');
+
+      if (guests.length === 0) {
+        list.innerHTML = '<li class="empty-state" id="emptyState">Agrega el primer invitado arriba</li>';
+        return;
+      }
+
+      list.innerHTML = guests.map(function (name, i) {
+        var link = buildLink(name);
+        return '<li class="guest-item">' +
+          '<span class="guest-name">' + escHtml(name) + '</span>' +
+          '<span class="guest-link">' + escHtml(link) + '</span>' +
+          '<button class="btn-copy" data-link="' + escHtml(link) + '" data-i="' + i + '">Copiar</button>' +
+          '<button class="btn-delete" data-i="' + i + '" title="Eliminar">✕</button>' +
+        '</li>';
+      }).join('');
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function addGuest() {
+      var name = input.value.trim();
+      if (!name) { input.focus(); return; }
+      if (guests.indexOf(name) === -1) guests.unshift(name);
+      save();
+      render();
+      input.value = '';
+      input.focus();
+    }
+
+    document.getElementById('btnAdd').addEventListener('click', addGuest);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') addGuest();
+    });
+
+    list.addEventListener('click', function (e) {
+      // Copiar link
+      var copyBtn = e.target.closest('.btn-copy');
+      if (copyBtn) {
+        var link = copyBtn.dataset.link;
+        navigator.clipboard.writeText(link).then(function () {
+          copyBtn.textContent = '✓ Copiado';
+          copyBtn.classList.add('copied');
+          setTimeout(function () {
+            copyBtn.textContent = 'Copiar';
+            copyBtn.classList.remove('copied');
+          }, 2000);
+        });
+        return;
+      }
+
+      // Eliminar
+      var delBtn = e.target.closest('.btn-delete');
+      if (delBtn) {
+        guests.splice(Number(delBtn.dataset.i), 1);
+        save();
+        render();
+      }
+    });
+
+    render();
+  </script>
+
+</body>
+</html>

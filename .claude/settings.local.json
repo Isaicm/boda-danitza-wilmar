@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(open \"http://localhost:8090\")",
+      "Bash(python3 -m http.server 8090)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8090/index.html)"
+    ]
+  }
+}

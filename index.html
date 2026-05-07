@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#151915" />
+  <title>Wilmar &amp; Danitza — 09.08.2026</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23202017'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%23c6a15b' stroke-width='2'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='serif' font-size='18' fill='%23fffaf4'%3EW%26D%3C/text%3E%3C/svg%3E" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- AOS — Animate on Scroll -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     SOBRE DE APERTURA
+══════════════════════════════════════════════ -->
+<div id="envelopeOverlay" class="envelope-overlay">
+  <div class="env-petals" id="envPetals"></div>
+  <div class="welcome-ambient" aria-hidden="true">
+    <div class="welcome-photo-ghost">
+      <img src="assets/images/10.JPG" alt="" />
+    </div>
+    <svg class="ambient-branch ambient-branch-left" viewBox="0 0 260 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="branch-stem" d="M201 503C132 410 97 323 96 240C95 157 127 82 192 15" />
+      <path class="branch-leaf" d="M102 286C57 284 28 261 14 217C63 214 91 237 102 286Z" />
+      <path class="branch-leaf" d="M108 211C62 193 39 158 39 106C91 124 113 158 108 211Z" />
+      <path class="branch-leaf" d="M122 356C85 373 47 367 9 337C50 311 88 318 122 356Z" />
+      <path class="branch-leaf branch-gold" d="M123 143C145 98 181 75 232 75C211 124 174 146 123 143Z" />
+      <path class="branch-leaf branch-gold" d="M126 312C159 277 200 267 248 282C215 321 174 330 126 312Z" />
+      <circle class="branch-bloom" cx="103" cy="244" r="9" />
+      <circle class="branch-bloom" cx="117" cy="164" r="6" />
+    </svg>
+    <svg class="ambient-branch ambient-branch-right" viewBox="0 0 260 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="branch-stem" d="M59 503C128 410 163 323 164 240C165 157 133 82 68 15" />
+      <path class="branch-leaf" d="M158 286C203 284 232 261 246 217C197 214 169 237 158 286Z" />
+      <path class="branch-leaf" d="M152 211C198 193 221 158 221 106C169 124 147 158 152 211Z" />
+      <path class="branch-leaf" d="M138 356C175 373 213 367 251 337C210 311 172 318 138 356Z" />
+      <path class="branch-leaf branch-gold" d="M137 143C115 98 79 75 28 75C49 124 86 146 137 143Z" />
+      <path class="branch-leaf branch-gold" d="M134 312C101 277 60 267 12 282C45 321 86 330 134 312Z" />
+      <circle class="branch-bloom" cx="157" cy="244" r="9" />
+      <circle class="branch-bloom" cx="143" cy="164" r="6" />
+    </svg>
+    <svg class="ambient-rings" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="320" cy="320" r="256" />
+      <circle cx="320" cy="320" r="206" />
+      <path d="M111 332C151 223 223 151 332 111" />
+      <path d="M529 308C489 417 417 489 308 529" />
+    </svg>
+  </div>
+  <div class="envelope-scene">
+    <div class="envelope" id="envelope" role="button" tabindex="0" aria-expanded="false" aria-label="Abrir invitación de Wilmar y Danitza">
+      <div class="envelope-back"></div>
+      <div class="envelope-liner"></div>
+      <div class="envelope-left-fold"></div>
+      <div class="envelope-right-fold"></div>
+      <div class="envelope-bottom-fold"></div>
+      <div class="envelope-flap" id="envelopeFlap"></div>
+      <div class="envelope-front">
+        <div class="wax-seal">
+          <span>W<em>&amp;</em>D</span>
+        </div>
+      </div>
+      <div class="envelope-card" id="envelopeCard">
+        <!-- Destello al abrir -->
+        <div class="card-flash" id="cardFlash"></div>
+
+        <!-- Flor animada decorativa -->
+        <div class="card-flower" aria-hidden="true">
+          <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="flower-petals">
+              <ellipse cx="45" cy="22" rx="8" ry="18" fill="#EDD8D8" opacity=".85" transform="rotate(0 45 45)"/>
+              <ellipse cx="45" cy="22" rx="8" ry="18" fill="#CCA8A8" opacity=".75" transform="rotate(45 45 45)"/>
+              <ellipse cx="45" cy="22" rx="8" ry="18" fill="#EDD8D8" opacity=".85" transform="rotate(90 45 45)"/>
+              <ellipse cx="45" cy="22" rx="8" ry="18" fill="#CCA8A8" opacity=".75" transform="rotate(135 45 45)"/>
+              <ellipse cx="45" cy="22" rx="8" ry="18" fill="#EDD8D8" opacity=".85" transform="rotate(180 45 45)"/>
+              <ellipse cx="45" cy="22" rx="8" ry="18" fill="#CCA8A8" opacity=".75" transform="rotate(225 45 45)"/>
+              <ellipse cx="45" cy="22" rx="8" ry="18" fill="#EDD8D8" opacity=".85" transform="rotate(270 45 45)"/>
+              <ellipse cx="45" cy="22" rx="8" ry="18" fill="#CCA8A8" opacity=".75" transform="rotate(315 45 45)"/>
+            </g>
+            <circle cx="45" cy="45" r="11" fill="#C9A96E"/>
+            <circle cx="45" cy="45" r="6"  fill="#E2C99A"/>
+          </svg>
+        </div>
+
+        <!-- Foto de los novios -->
+        <div class="card-photo-wrap">
+          <img src="assets/images/10.JPG" alt="Wilmar y Danitza" class="card-photo" />
+        </div>
+
+        <p class="card-overline" id="cardPara">Invitación privada</p>
+        <p class="card-tag">Con amor los invitan a su boda</p>
+        <h2 class="card-names">Wilmar <span class="card-amp">&amp;</span> Danitza</h2>
+        <p class="card-date">09 · 08 · 2026</p>
+        <p class="card-venue">Hacienda Castellazo · Cali · 5:00 PM</p>
+        <button class="btn-enter" id="btnEnter"><span>Entrar a la invitación</span></button>
+      </div>
+    </div>
+    <p class="envelope-hint" id="envelopeHint">Haz clic para abrir</p>
+  </div>
+</div>
+
+<!-- PARTÍCULAS FONDO (fuera del main) -->
+<div id="tsparticles"></div>
+
+<!-- BOTÓN MÚSICA -->
+<button class="music-toggle" id="musicToggle" aria-label="Música" title="Música de fondo">
+  <span class="music-icon">♪</span>
+</button>
+
+<!-- ══════════════════════════════════════════════
+     CONTENIDO PRINCIPAL
+══════════════════════════════════════════════ -->
+<main id="mainContent" class="main-content hidden">
+
+  <!-- ── HERO ── -->
+  <section class="section-hero" id="sectionHero">
+    <!-- Pétalos cayendo (JS los genera) -->
+    <div class="hero-petals" id="heroPetals" aria-hidden="true"></div>
+    <div class="hero-photo-layer" aria-hidden="true">
+      <img src="assets/images/01.JPG" alt="" />
+    </div>
+    <div class="hero-svg-field" aria-hidden="true">
+      <svg class="hero-line-art hero-line-left" viewBox="0 0 260 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M224 405C154 328 119 253 121 179C123 105 156 51 221 17" />
+        <path d="M122 179C75 169 43 139 26 88C83 91 116 121 122 179Z" />
+        <path d="M125 255C79 274 39 265 7 229C55 207 94 216 125 255Z" />
+        <path d="M136 125C159 78 197 54 249 54C229 105 191 128 136 125Z" />
+        <circle cx="122" cy="179" r="8" />
+      </svg>
+      <svg class="hero-line-art hero-line-right" viewBox="0 0 260 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M36 405C106 328 141 253 139 179C137 105 104 51 39 17" />
+        <path d="M138 179C185 169 217 139 234 88C177 91 144 121 138 179Z" />
+        <path d="M135 255C181 274 221 265 253 229C205 207 166 216 135 255Z" />
+        <path d="M124 125C101 78 63 54 11 54C31 105 69 128 124 125Z" />
+        <circle cx="138" cy="179" r="8" />
+      </svg>
+    </div>
+
+    <!-- Florales de esquina -->
+    <div class="floral floral-tl" aria-hidden="true">
+      <svg viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g opacity="0.55">
+          <!-- Rosas estilizadas -->
+          <ellipse cx="40" cy="40" rx="18" ry="28" fill="#CCA8A8" transform="rotate(-30 40 40)"/>
+          <ellipse cx="40" cy="40" rx="14" ry="22" fill="#A87878" transform="rotate(30 40 40)"/>
+          <ellipse cx="40" cy="40" rx="10" ry="16" fill="#EDD8D8" transform="rotate(90 40 40)"/>
+          <circle cx="40" cy="40" r="7" fill="#C9A96E"/>
+          <!-- Capullo -->
+          <ellipse cx="80" cy="20" rx="8" ry="18" fill="#CCA8A8" transform="rotate(-15 80 20)"/>
+          <ellipse cx="80" cy="20" rx="5" ry="12" fill="#EDD8D8" transform="rotate(15 80 20)"/>
+          <!-- Hojas -->
+          <path d="M 55 60 Q 80 90 65 110 Q 40 90 55 60 Z" fill="#5A6B4A" opacity="0.7"/>
+          <path d="M 20 70 Q 0 100 15 120 Q 35 100 20 70 Z" fill="#4A5C3A" opacity="0.6"/>
+          <path d="M 100 35 Q 130 20 140 45 Q 115 55 100 35 Z" fill="#5A6B4A" opacity="0.5"/>
+          <!-- Tallos -->
+          <path d="M 40 68 Q 50 100 40 130" stroke="#5A6B4A" stroke-width="2" fill="none" opacity="0.6"/>
+          <path d="M 40 68 Q 20 80 10 100" stroke="#4A5C3A" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <!-- Florecitas pequeñas -->
+          <circle cx="120" cy="60" r="5" fill="#CCA8A8" opacity="0.6"/>
+          <circle cx="130" cy="55" r="3" fill="#EDD8D8" opacity="0.5"/>
+          <circle cx="115" cy="70" r="4" fill="#A87878" opacity="0.5"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="floral floral-tr" aria-hidden="true">
+      <svg viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g opacity="0.55" transform="scale(-1,1) translate(-180,0)">
+          <ellipse cx="40" cy="40" rx="18" ry="28" fill="#CCA8A8" transform="rotate(-30 40 40)"/>
+          <ellipse cx="40" cy="40" rx="14" ry="22" fill="#A87878" transform="rotate(30 40 40)"/>
+          <ellipse cx="40" cy="40" rx="10" ry="16" fill="#EDD8D8" transform="rotate(90 40 40)"/>
+          <circle cx="40" cy="40" r="7" fill="#C9A96E"/>
+          <ellipse cx="80" cy="20" rx="8" ry="18" fill="#CCA8A8" transform="rotate(-15 80 20)"/>
+          <ellipse cx="80" cy="20" rx="5" ry="12" fill="#EDD8D8" transform="rotate(15 80 20)"/>
+          <path d="M 55 60 Q 80 90 65 110 Q 40 90 55 60 Z" fill="#5A6B4A" opacity="0.7"/>
+          <path d="M 20 70 Q 0 100 15 120 Q 35 100 20 70 Z" fill="#4A5C3A" opacity="0.6"/>
+          <path d="M 100 35 Q 130 20 140 45 Q 115 55 100 35 Z" fill="#5A6B4A" opacity="0.5"/>
+          <path d="M 40 68 Q 50 100 40 130" stroke="#5A6B4A" stroke-width="2" fill="none" opacity="0.6"/>
+          <circle cx="120" cy="60" r="5" fill="#CCA8A8" opacity="0.6"/>
+          <circle cx="130" cy="55" r="3" fill="#EDD8D8" opacity="0.5"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="floral floral-bl" aria-hidden="true">
+      <svg viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g opacity="0.55" transform="scale(1,-1) translate(0,-180)">
+          <ellipse cx="40" cy="40" rx="18" ry="28" fill="#CCA8A8" transform="rotate(-30 40 40)"/>
+          <ellipse cx="40" cy="40" rx="14" ry="22" fill="#A87878" transform="rotate(30 40 40)"/>
+          <ellipse cx="40" cy="40" rx="10" ry="16" fill="#EDD8D8" transform="rotate(90 40 40)"/>
+          <circle cx="40" cy="40" r="7" fill="#C9A96E"/>
+          <path d="M 55 60 Q 80 90 65 110 Q 40 90 55 60 Z" fill="#5A6B4A" opacity="0.7"/>
+          <path d="M 20 70 Q 0 100 15 120 Q 35 100 20 70 Z" fill="#4A5C3A" opacity="0.6"/>
+          <path d="M 40 68 Q 50 100 40 130" stroke="#5A6B4A" stroke-width="2" fill="none" opacity="0.6"/>
+          <circle cx="120" cy="60" r="5" fill="#CCA8A8" opacity="0.6"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="floral floral-br" aria-hidden="true">
+      <svg viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g opacity="0.55" transform="scale(-1,-1) translate(-180,-180)">
+          <ellipse cx="40" cy="40" rx="18" ry="28" fill="#CCA8A8" transform="rotate(-30 40 40)"/>
+          <ellipse cx="40" cy="40" rx="14" ry="22" fill="#A87878" transform="rotate(30 40 40)"/>
+          <ellipse cx="40" cy="40" rx="10" ry="16" fill="#EDD8D8" transform="rotate(90 40 40)"/>
+          <circle cx="40" cy="40" r="7" fill="#C9A96E"/>
+          <path d="M 55 60 Q 80 90 65 110 Q 40 90 55 60 Z" fill="#5A6B4A" opacity="0.7"/>
+          <path d="M 20 70 Q 0 100 15 120 Q 35 100 20 70 Z" fill="#4A5C3A" opacity="0.6"/>
+          <path d="M 40 68 Q 50 100 40 130" stroke="#5A6B4A" stroke-width="2" fill="none" opacity="0.6"/>
+          <circle cx="120" cy="60" r="5" fill="#CCA8A8" opacity="0.6"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Contenido central -->
+    <div class="hero-inner">
+      <p class="hero-guest-name" id="heroGuestName" style="display:none"></p>
+      <p class="hero-eyebrow">— Con inmensa alegría anuncian —</p>
+
+      <div class="hero-names-block">
+        <h1 class="hero-name" id="heroName1">Wilmar</h1>
+        <div class="hero-divider-row">
+          <span class="divider-line"></span>
+          <span class="hero-amp">&amp;</span>
+          <span class="divider-line"></span>
+        </div>
+        <h1 class="hero-name" id="heroName2">Danitza</h1>
+      </div>
+
+      <div class="hero-meta">
+        <p class="hero-date">Domingo, 9 de Agosto de 2026</p>
+        <div class="hero-meta-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <p class="hero-venue">Hacienda Castellazo · Cali, Colombia</p>
+      </div>
+
+      <a href="#rsvp" class="btn-hero">Confirmar Asistencia</a>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="scroll-hint">
+      <span class="scroll-hint-line"></span>
+      <span class="scroll-hint-text">Desliza</span>
+    </div>
+  </section>
+
+  <!-- ── CUENTA REGRESIVA ── -->
+  <section class="section-countdown" id="sectionCountdown">
+    <div class="section-inner">
+      <h2 class="section-title" data-aos="fade-up">Faltan</h2>
+      <div class="countdown-grid" id="countdownGrid" data-aos="fade-up" data-aos-delay="100">
+        <div class="countdown-unit">
+          <span class="count-num" id="cDays">000</span>
+          <span class="count-label">Días</span>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-unit">
+          <span class="count-num" id="cHours">00</span>
+          <span class="count-label">Horas</span>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-unit">
+          <span class="count-num" id="cMinutes">00</span>
+          <span class="count-label">Minutos</span>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-unit">
+          <span class="count-num" id="cSeconds">00</span>
+          <span class="count-label">Segundos</span>
+        </div>
+      </div>
+      <p class="countdown-sub" data-aos="fade-up" data-aos-delay="200">para el gran día</p>
+    </div>
+  </section>
+
+  <!-- ── CRONOGRAMA ── -->
+  <section class="section-schedule" id="sectionSchedule">
+    <div class="section-inner">
+      <p class="section-eyebrow" data-aos="fade-up">El Gran Día</p>
+      <h2 class="section-title" data-aos="fade-up" data-aos-delay="80">Programa</h2>
+      <div class="schedule-list">
+        <div class="schedule-item" data-aos="fade-right">
+          <div class="sched-time-wrap"><span class="sched-time">5:00 PM</span></div>
+          <div class="sched-connector"><div class="sched-dot"></div></div>
+          <div class="sched-info"><h3>Ceremonia Religiosa</h3><p>Hacienda Castellazo</p></div>
+        </div>
+        <div class="schedule-item" data-aos="fade-left" data-aos-delay="80">
+          <div class="sched-time-wrap"><span class="sched-time">5:30 PM</span></div>
+          <div class="sched-connector"><div class="sched-dot"></div></div>
+          <div class="sched-info"><h3>El Sí</h3><p>El momento más especial</p></div>
+        </div>
+        <div class="schedule-item" data-aos="fade-right" data-aos-delay="160">
+          <div class="sched-time-wrap"><span class="sched-time">6:00 PM</span></div>
+          <div class="sched-connector"><div class="sched-dot"></div></div>
+          <div class="sched-info"><h3>Sesión de Fotos</h3><p>Recuerdos para siempre</p></div>
+        </div>
+        <div class="schedule-item" data-aos="fade-left" data-aos-delay="240">
+          <div class="sched-time-wrap"><span class="sched-time">6:30 PM</span></div>
+          <div class="sched-connector"><div class="sched-dot"></div></div>
+          <div class="sched-info"><h3>Brindis</h3><p>Por el amor y la nueva vida</p></div>
+        </div>
+        <div class="schedule-item" data-aos="fade-right" data-aos-delay="320">
+          <div class="sched-time-wrap"><span class="sched-time">7:00 PM</span></div>
+          <div class="sched-connector"><div class="sched-dot"></div></div>
+          <div class="sched-info"><h3>Cena y Celebración</h3><p>¡Música, baile y felicidad!</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GALERÍA ── -->
+  <section class="section-gallery" id="sectionGallery">
+    <div class="section-inner">
+      <p class="section-eyebrow" data-aos="fade-up">Nuestra Historia</p>
+      <h2 class="section-title" data-aos="fade-up" data-aos-delay="80">Momentos</h2>
+      <div class="gallery-grid" id="galleryGrid">
+        <div class="gallery-item gallery-tall" data-index="0" data-aos="fade-up">
+          <img src="assets/images/01.JPG" alt="Foto 1" loading="lazy" />
+          <div class="gallery-overlay"></div>
+        </div>
+        <div class="gallery-item" data-index="1" data-aos="fade-up" data-aos-delay="60">
+          <img src="assets/images/02.JPEG" alt="Foto 2" loading="lazy" />
+          <div class="gallery-overlay"></div>
+        </div>
+        <div class="gallery-item" data-index="2" data-aos="fade-up" data-aos-delay="120">
+          <img src="assets/images/03.JPEG" alt="Foto 3" loading="lazy" />
+          <div class="gallery-overlay"></div>
+        </div>
+        <div class="gallery-item gallery-tall" data-index="3" data-aos="fade-up" data-aos-delay="180">
+          <img src="assets/images/04.JPEG" alt="Foto 4" loading="lazy" />
+          <div class="gallery-overlay"></div>
+        </div>
+        <div class="gallery-item" data-index="4" data-aos="fade-up" data-aos-delay="60">
+          <img src="assets/images/05.JPEG" alt="Foto 5" loading="lazy" />
+          <div class="gallery-overlay"></div>
+        </div>
+        <div class="gallery-item gallery-wide" data-index="5" data-aos="fade-up" data-aos-delay="120">
+          <img src="assets/images/06.JPEG" alt="Foto 6" loading="lazy" />
+          <div class="gallery-overlay"></div>
+        </div>
+        <div class="gallery-item" data-index="6" data-aos="fade-up" data-aos-delay="60">
+          <img src="assets/images/07.JPEG" alt="Foto 7" loading="lazy" />
+          <div class="gallery-overlay"></div>
+        </div>
+        <div class="gallery-item" data-index="7" data-aos="fade-up" data-aos-delay="120">
+          <img src="assets/images/08.JPEG" alt="Foto 8" loading="lazy" />
+          <div class="gallery-overlay"></div>
+        </div>
+        <div class="gallery-item gallery-tall" data-index="8" data-aos="fade-up" data-aos-delay="180">
+          <img src="assets/images/09.JPEG" alt="Foto 9" loading="lazy" />
+          <div class="gallery-overlay"></div>
+        </div>
+        <div class="gallery-item" data-index="9" data-aos="fade-up" data-aos-delay="60">
+          <img src="assets/images/10.JPG" alt="Foto 10" loading="lazy" />
+          <div class="gallery-overlay"></div>
+        </div>
+        <div class="gallery-item" data-index="10" data-aos="fade-up" data-aos-delay="120">
+          <img src="assets/images/11.JPG" alt="Foto 11" loading="lazy" />
+          <div class="gallery-overlay"></div>
+        </div>
+        <div class="gallery-item" data-index="11" data-aos="fade-up" data-aos-delay="180">
+          <img src="assets/images/12.JPG" alt="Foto 12" loading="lazy" />
+          <div class="gallery-overlay"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar galería">&times;</button>
+    <button class="lightbox-prev" id="lightboxPrev" aria-label="Foto anterior">&#8592;</button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="" />
+    <button class="lightbox-next" id="lightboxNext" aria-label="Foto siguiente">&#8594;</button>
+  </div>
+
+  <!-- ── CÓDIGO DE VESTIMENTA ── -->
+  <section class="section-dresscode" id="sectionDresscode">
+    <div class="section-inner">
+      <p class="section-eyebrow" data-aos="fade-up">Elegancia</p>
+      <h2 class="section-title" data-aos="fade-up" data-aos-delay="80">Código de Vestimenta</h2>
+      <p class="dresscode-subtitle" data-aos="fade-up" data-aos-delay="120">Etiqueta Formal · Traje Elegante</p>
+
+      <blockquote class="dresscode-note" data-aos="fade-up" data-aos-delay="160">
+        "Deseamos que todos luzcan radiantes. Con el fin de armonizar con nuestra decoración,
+        les solicitamos amablemente abstenerse de usar los colores <strong>blanco</strong> y
+        <strong>palo de rosa</strong>, los cuales están reservados para la novia y su corte."
+      </blockquote>
+
+      <div class="dresscode-swatches" data-aos="fade-up" data-aos-delay="200">
+        <div class="swatch-group">
+          <p class="swatch-label">Tonos bienvenidos</p>
+          <div class="swatches">
+            <div class="swatch" style="background:#1A1A2E" title="Azul noche"></div>
+            <div class="swatch" style="background:#2C1818" title="Chocolate"></div>
+            <div class="swatch" style="background:#4A3728" title="Café oscuro"></div>
+            <div class="swatch" style="background:#C9A96E" title="Champagne dorado"></div>
+            <div class="swatch" style="background:#5A6B4A" title="Verde botella"></div>
+            <div class="swatch" style="background:#7A6060" title="Mauve gris"></div>
+          </div>
+        </div>
+        <div class="swatch-group">
+          <p class="swatch-label swatch-forbidden-label">Reservado para la novia</p>
+          <div class="swatches">
+            <div class="swatch swatch-forbidden" style="background:#FFFFFF" title="Blanco"></div>
+            <div class="swatch swatch-forbidden" style="background:#FAF0E6" title="Crema"></div>
+            <div class="swatch swatch-forbidden" style="background:#EDD8D8" title="Blush"></div>
+            <div class="swatch swatch-forbidden" style="background:#CCA8A8" title="Palo de rosa"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MAPA ── -->
+  <section class="section-map" id="sectionMap">
+    <div class="section-inner">
+      <p class="section-eyebrow" data-aos="fade-up">Encuéntranos</p>
+      <h2 class="section-title" data-aos="fade-up" data-aos-delay="80">¿Cómo Llegar?</h2>
+      <p class="map-address" data-aos="fade-up" data-aos-delay="120">Hacienda Castellazo · Cali, Valle del Cauca</p>
+      <div id="map" class="map-container" data-aos="fade-up" data-aos-delay="160"></div>
+      <a class="btn-outline" href="https://www.google.com/maps/search/Hacienda+Castellazo+Cali+Colombia" target="_blank" rel="noopener noreferrer" data-aos="fade-up" data-aos-delay="200">
+        Abrir en Google Maps
+      </a>
+    </div>
+  </section>
+
+  <!-- ── LLUVIA DE SOBRES ── -->
+  <section class="section-sobres" id="sectionSobres">
+    <div class="sobres-rain-bg" id="sobresRain" aria-hidden="true"></div>
+    <div class="section-inner">
+      <p class="section-eyebrow" data-aos="fade-up">Regalos</p>
+      <h2 class="section-title" data-aos="fade-up" data-aos-delay="80">Un Detalle de Amor</h2>
+      <p class="sobres-intro" data-aos="fade-up" data-aos-delay="120">
+        Su presencia es nuestro mejor regalo. Sin embargo, si desean tener un detalle con nosotros,
+        contaremos con <strong>Lluvia de Sobres</strong> el día del evento para ayudarnos
+        a construir nuestro nuevo hogar.
+      </p>
+      <div class="sobres-cards">
+        <div class="sobre-card" data-aos="fade-up" data-aos-delay="160">
+          <div class="sobre-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 15.5C8 13.6 9.6 12 11.5 12H36.5C38.4 12 40 13.6 40 15.5V32.5C40 34.4 38.4 36 36.5 36H11.5C9.6 36 8 34.4 8 32.5V15.5Z" />
+              <path d="M10 15L24 26L38 15" />
+              <path d="M10.5 34L20 24.8" />
+              <path d="M37.5 34L28 24.8" />
+            </svg>
+          </div>
+          <h3>Sobre en Efectivo</h3>
+          <p>Entregado directamente en la recepción el día del evento.</p>
+        </div>
+        <div class="sobre-card" data-aos="fade-up" data-aos-delay="240">
+          <div class="sobre-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="7" y="12" width="34" height="24" rx="4" />
+              <path d="M7 19H41" />
+              <path d="M13 29H24" />
+              <path d="M31 29H35" />
+            </svg>
+          </div>
+          <h3>Transferencia Bancaria</h3>
+          <p>Nequi / Bancolombia<br><strong>Número por confirmar</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RSVP ── -->
+  <section class="section-rsvp" id="rsvp">
+    <div class="section-inner">
+      <p class="section-eyebrow" data-aos="fade-up">Asistencia</p>
+      <h2 class="section-title" data-aos="fade-up" data-aos-delay="80">Confirmar Asistencia</h2>
+      <p class="rsvp-sub" data-aos="fade-up" data-aos-delay="120">Confirma antes del <strong>10 de Julio de 2026</strong></p>
+      <form class="rsvp-form" id="rsvpForm" novalidate data-aos="fade-up" data-aos-delay="160">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre">Nombre completo</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre" />
+          </div>
+          <div class="form-group">
+            <label for="email">Correo electrónico</label>
+            <input type="email" id="email" name="email" required placeholder="tu@correo.com" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="asistencia">¿Confirmas asistencia?</label>
+            <select id="asistencia" name="asistencia" required>
+              <option value="">— Selecciona —</option>
+              <option value="Sí, estaré ahí">Sí, estaré ahí</option>
+              <option value="No podré asistir">No podré asistir</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="invitados">Acompañantes</label>
+            <input type="number" id="invitados" name="invitados" min="0" max="5" placeholder="0" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="mensaje">Mensaje para los novios <span class="optional">(opcional)</span></label>
+          <textarea id="mensaje" name="mensaje" rows="3" placeholder="Escribe aquí..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit" id="btnSubmit">
+          <span class="btn-text">Enviar Confirmación</span>
+          <span class="btn-loading hidden">Enviando...</span>
+        </button>
+        <p class="form-success hidden" id="formSuccess">¡Gracias! Recibimos tu confirmación. ¡Nos vemos el 9 de agosto!</p>
+        <p class="form-error hidden" id="formError">Error al enviar. Por favor intenta de nuevo.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-florals" aria-hidden="true">
+      <svg viewBox="0 0 260 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 42C72 8 188 8 244 42" />
+        <path d="M58 31C40 22 30 11 27 0C48 4 60 14 58 31Z" />
+        <path d="M101 21C87 9 83 -5 89 -20C106 -6 110 8 101 21Z" transform="translate(0 20)" />
+        <path d="M159 21C173 9 177 -5 171 -20C154 -6 150 8 159 21Z" transform="translate(0 20)" />
+        <path d="M202 31C220 22 230 11 233 0C212 4 200 14 202 31Z" />
+        <circle cx="130" cy="17" r="7" />
+      </svg>
+    </div>
+    <p class="footer-names">Wilmar &amp; Danitza</p>
+    <div class="footer-divider"></div>
+    <p class="footer-date">09 · 08 · 2026 · Cali, Colombia</p>
+    <p class="footer-love">Hecho con amor ♡</p>
+  </footer>
+
+</main>
+
+<!-- CDN Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- YouTube IFrame API (para música de fondo) -->
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+<!-- Reproductor YouTube oculto -->
+<div id="yt-player-wrap" style="position:fixed;bottom:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+  <div id="yt-player"></div>
+</div>
+<script src="js/main.js"></script>
+<script src="js/map.js"></script>
+<script src="js/music.js"></script>
+</body>
+</html>
