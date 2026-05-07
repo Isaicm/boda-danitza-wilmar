@@ -221,7 +221,13 @@
   <div class="card">
     <label for="inputNombre">Nombre del invitado</label>
     <input type="text" id="inputNombre" placeholder="Ej: Daniel Cortés" autocomplete="off" />
-    <button class="btn-add" id="btnAdd">Generar link →</button>
+    <div style="display:flex;gap:0.75rem;margin-top:0.75rem;align-items:center;">
+      <div style="flex:1;">
+        <label for="inputMax" style="margin-bottom:0.35rem;">Máx. acompañantes</label>
+        <input type="number" id="inputMax" min="0" max="20" placeholder="0" style="padding:0.6rem 0.8rem;font-size:0.95rem;" />
+      </div>
+      <button class="btn-add" id="btnAdd" style="flex:2;margin-top:1.55rem;">Generar link →</button>
+    </div>
   </div>
 
   <!-- Lista -->
@@ -245,18 +251,28 @@
       return loc.protocol + '//' + loc.host + loc.pathname.replace('generar.html', 'index.html');
     })();
 
-    var guests  = JSON.parse(localStorage.getItem('boda_guests') || '[]');
+    // guests: array of {name, max}  (max = null → sin límite)
+    var guests  = JSON.parse(localStorage.getItem('boda_guests_v2') || '[]');
     var input   = document.getElementById('inputNombre');
+    var inputMax = document.getElementById('inputMax');
     var list    = document.getElementById('guestList');
     var count   = document.getElementById('countLabel');
     var empty   = document.getElementById('emptyState');
 
-    function buildLink(name) {
-      return BASE_URL + '?para=' + encodeURIComponent(name);
+    function buildLink(g) {
+      var url = BASE_URL + '?para=' + encodeURIComponent(g.name);
+      if (g.max !== null && g.max !== undefined) url += '&max=' + g.max;
+      return url;
     }
 
     function save() {
-      localStorage.setItem('boda_guests', JSON.stringify(guests));
+      localStorage.setItem('boda_guests_v2', JSON.stringify(guests));
+    }
+
+    function maxLabel(g) {
+      if (g.max === null || g.max === undefined) return '';
+      if (g.max === 0) return ' · sin acompañantes';
+      return ' · máx. ' + g.max + ' acomp.';
     }
 
     function render() {
@@ -267,11 +283,11 @@
         return;
       }
 
-      list.innerHTML = guests.map(function (name, i) {
-        var link = buildLink(name);
+      list.innerHTML = guests.map(function (g, i) {
+        var link = buildLink(g);
         return '<li class="guest-item">' +
           '<div class="guest-info">' +
-            '<span class="guest-name">' + escHtml(name) + '</span>' +
+            '<span class="guest-name">' + escHtml(g.name) + '<small style="font-family:\'Lato\',sans-serif;font-size:0.72rem;color:rgba(201,169,110,0.75);margin-left:0.4rem;">' + escHtml(maxLabel(g)) + '</small></span>' +
             '<span class="guest-link">' + escHtml(link) + '</span>' +
           '</div>' +
           '<button class="btn-copy" data-link="' + escHtml(link) + '" data-i="' + i + '">Copiar</button>' +
@@ -287,10 +303,15 @@
     function addGuest() {
       var name = input.value.trim();
       if (!name) { input.focus(); return; }
-      if (guests.indexOf(name) === -1) guests.unshift(name);
+      var maxVal = inputMax.value.trim();
+      var maxNum = maxVal !== '' ? parseInt(maxVal, 10) : null;
+      if (maxNum !== null && isNaN(maxNum)) maxNum = null;
+      var already = guests.findIndex(function(g){ return g.name === name; });
+      if (already === -1) guests.unshift({ name: name, max: maxNum });
       save();
       render();
-      input.value = '';
+      input.value   = '';
+      inputMax.value = '';
       input.focus();
     }
 

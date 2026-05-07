@@ -21,6 +21,7 @@ const WEDDING_DATE = new Date('2026-08-09T17:00:00-05:00');
   var tapBtn     = document.getElementById('introTapBtn');
   var skipBtn    = document.getElementById('introSkip');
   var petalsWrap = document.getElementById('introPetals');
+  var sparksWrap = document.getElementById('introSparks');
   var envelope   = document.getElementById('envelopeOverlay');
 
   if (!intro || !video) return;
@@ -32,33 +33,53 @@ const WEDDING_DATE = new Date('2026-08-09T17:00:00-05:00');
     envelope.style.pointerEvents = '';
   }
 
-  function startIntro() {
-    // Ocultar pantalla de toque
-    tapScreen.classList.add('hidden');
+  function spawnSparks() {
+    if (!sparksWrap) return;
+    var colors = ['#fff9e6','#ffe4b5','#ffd700','#ffffff','#ffe8ef','#ffc0cb'];
+    var count  = 38;
+    for (var i = 0; i < count; i++) {
+      (function(idx) {
+        var delay    = idx * 90 + Math.random() * 200;   // ms stagger
+        var duration = 1400 + Math.random() * 1200;       // ms
+        var size     = 2 + Math.random() * 4;             // px
+        var top      = 5 + Math.random() * 90;            // %
+        var color    = colors[Math.floor(Math.random() * colors.length)];
+        var glow     = Math.random() > 0.5;
 
-    // Reproducir video y mostrar con fade
+        var el = document.createElement('div');
+        el.className = 'intro-spark';
+        el.style.cssText = [
+          'width:'  + size + 'px',
+          'height:' + size + 'px',
+          'top:'    + top  + '%',
+          'left:-6vw',
+          'background:' + color,
+          'animation-duration:' + duration + 'ms',
+          'animation-delay:'   + delay    + 'ms',
+          glow ? 'box-shadow:0 0 ' + (size*2) + 'px ' + size + 'px ' + color : ''
+        ].join(';');
+
+        sparksWrap.appendChild(el);
+        // Limpiar tras terminar para no acumular nodos
+        setTimeout(function() { el.remove(); }, delay + duration + 100);
+      })(i);
+    }
+  }
+
+  function startIntro() {
+    tapScreen.classList.add('hidden');
     video.play().catch(function () {});
     video.classList.add('playing');
-
-    // Mostrar botón saltar
     if (skipBtn) skipBtn.style.display = '';
-
-    // Arrancar música (gesto del usuario confirmado)
     if (typeof window.startMusic === 'function') window.startMusic();
-
-    // Pétalos sobre el video
     spawnPetals(petalsWrap, 20, 'petalFall');
+    // Brillitos con pequeño retraso para que se vean sobre el video
+    setTimeout(spawnSparks, 300);
   }
 
   if (tapBtn) tapBtn.addEventListener('click', startIntro);
-
-  // Saltar: termina el video y va al sobre
   if (skipBtn) skipBtn.addEventListener('click', showEnvelope);
-
-  // Video terminado → sobre
   video.addEventListener('ended', showEnvelope);
-
-  // Fallback si el video falla
   video.addEventListener('error', function () {
     tapScreen.classList.add('hidden');
     showEnvelope();
@@ -69,6 +90,13 @@ const WEDDING_DATE = new Date('2026-08-09T17:00:00-05:00');
 const GUEST_NAME = (function () {
   var raw = new URLSearchParams(window.location.search).get('para') || '';
   return raw.trim().replace(/\+/g, ' ');
+})();
+
+// ── MÁXIMO DE ACOMPAÑANTES (leído desde ?max=N) ──
+const MAX_GUESTS = (function () {
+  var raw = new URLSearchParams(window.location.search).get('max');
+  var n   = parseInt(raw, 10);
+  return (!isNaN(n) && n >= 0) ? n : null;
 })();
 
 // Inyecta el nombre en: tarjeta del sobre, hero y campo RSVP
@@ -594,8 +622,41 @@ function spawnSobresRain() {
 
   if (!form) return;
 
+  // Aplicar límite de acompañantes si viene en la URL
+  if (MAX_GUESTS !== null) {
+    const invField = document.getElementById('invitados');
+    const invHint  = document.getElementById('invitadosHint');
+    if (invField) {
+      invField.max = MAX_GUESTS;
+      if (MAX_GUESTS === 0) {
+        invField.value = '0';
+        invField.disabled = true;
+      }
+    }
+    if (invHint) {
+      invHint.textContent = MAX_GUESTS === 0
+        ? 'Esta invitación es personal — sin acompañantes.'
+        : 'Máximo ' + MAX_GUESTS + ' acompañante' + (MAX_GUESTS === 1 ? '' : 's') + ' permitido' + (MAX_GUESTS === 1 ? '' : 's') + '.';
+      invHint.style.display = '';
+    }
+  }
+
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
+
+    // Validar límite de acompañantes
+    if (MAX_GUESTS !== null) {
+      var numInv = parseInt(form.invitados.value, 10) || 0;
+      if (numInv > MAX_GUESTS) {
+        var invHint2 = document.getElementById('invitadosHint');
+        if (invHint2) {
+          invHint2.textContent = 'Máximo ' + MAX_GUESTS + ' acompañante' + (MAX_GUESTS === 1 ? '' : 's') + '. Corrige el número.';
+          invHint2.style.color = '#c0392b';
+          invHint2.style.display = '';
+        }
+        return;
+      }
+    }
 
     if (SHEETS_URL === 'YOUR_APPS_SCRIPT_URL') {
       alert(
