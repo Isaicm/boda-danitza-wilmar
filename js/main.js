@@ -325,8 +325,21 @@ function initScrollObservers() {
   });
 
   document.querySelectorAll(
-    '.reveal-item, .gallery-item, .schedule-item, .sobre-card'
+    '.reveal-item, .schedule-item, .sobre-card'
   ).forEach(function (el) { io.observe(el); });
+
+  // Polaroids — entrada escalonada al hacer scroll
+  var polaroids = Array.from(document.querySelectorAll('.polaroid'));
+  var poIo = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var el = entry.target;
+      var delay = polaroids.indexOf(el) * 80;
+      setTimeout(function () { el.classList.add('visible'); }, delay);
+      poIo.unobserve(el);
+    });
+  }, { rootMargin: '0px 0px -60px 0px', threshold: 0.1 });
+  polaroids.forEach(function (el) { poIo.observe(el); });
 
   // --- GSAP ScrollTrigger for section titles and countdown ---
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
@@ -386,7 +399,7 @@ function initScrollObservers() {
   const btnClose = document.getElementById('lightboxClose');
   const btnPrev = document.getElementById('lightboxPrev');
   const btnNext = document.getElementById('lightboxNext');
-  const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
+  const galleryItems = Array.from(document.querySelectorAll('.polaroid'));
 
   let currentIndex = 0;
 

@@ -1388,7 +1388,7 @@ body   {
 .section-gallery {
   position: relative;
   overflow: hidden;
-  background: var(--white);
+  background: var(--blush-cream);
 }
 
 .section-gallery::before {
@@ -1396,72 +1396,106 @@ body   {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 10% 50%, rgba(237,216,216,0.4) 0%, transparent 40%),
-    radial-gradient(ellipse at 90% 50%, rgba(204,168,168,0.3) 0%, transparent 40%);
+    radial-gradient(ellipse at 15% 40%, rgba(255,215,215,0.5) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 60%, rgba(243,182,182,0.35) 0%, transparent 45%);
   pointer-events: none;
 }
 
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 220px);
-  gap: 0.85rem;
-  margin-top: 2.5rem;
+/* ── POLAROID WALL ── */
+.polaroid-wall {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.8rem 1.2rem;
+  padding: 2.5rem 1rem 3rem;
   position: relative;
-  /* Explicit placement for tall/wide items */
-  grid-template-areas:
-    "t1 a  b  t2"
-    "t1 w  w  t2"
-    "c  d  t3 e "
-    "f  g  t3 h ";
 }
 
-/* Explicit grid placement — reliable across all browsers */
-.gallery-item:nth-child(1)  { grid-area: t1; }
-.gallery-item:nth-child(2)  { grid-area: a;  }
-.gallery-item:nth-child(3)  { grid-area: b;  }
-.gallery-item:nth-child(4)  { grid-area: t2; }
-.gallery-item:nth-child(5)  { grid-area: c;  }
-.gallery-item:nth-child(6)  { grid-area: w;  }
-.gallery-item:nth-child(7)  { grid-area: d;  }
-.gallery-item:nth-child(8)  { grid-area: e;  }
-.gallery-item:nth-child(9)  { grid-area: t3; }
-.gallery-item:nth-child(10) { grid-area: f;  }
-.gallery-item:nth-child(11) { grid-area: g;  }
-.gallery-item:nth-child(12) { grid-area: h;  }
+/* Rotaciones alternas para 12 fotos */
+.polaroid:nth-child(1)  { --r:  3deg; }
+.polaroid:nth-child(2)  { --r: -4deg; }
+.polaroid:nth-child(3)  { --r:  2deg; }
+.polaroid:nth-child(4)  { --r: -3deg; }
+.polaroid:nth-child(5)  { --r:  5deg; }
+.polaroid:nth-child(6)  { --r: -2deg; }
+.polaroid:nth-child(7)  { --r:  4deg; }
+.polaroid:nth-child(8)  { --r: -5deg; }
+.polaroid:nth-child(9)  { --r:  1deg; }
+.polaroid:nth-child(10) { --r: -4deg; }
+.polaroid:nth-child(11) { --r:  3deg; }
+.polaroid:nth-child(12) { --r: -2deg; }
 
-.gallery-item {
-  overflow: hidden;
-  border-radius: var(--radius);
+.polaroid {
+  background: #fff;
+  padding: 0.65rem 0.65rem 2.4rem;
+  box-shadow:
+    0 4px 8px rgba(128,81,82,0.10),
+    0 12px 32px rgba(128,81,82,0.14),
+    0 1px 2px rgba(0,0,0,0.06);
+  transform: rotate(var(--r, 2deg));
+  transition:
+    transform 0.35s var(--ease-bounce),
+    box-shadow 0.35s ease;
   cursor: zoom-in;
+  width: clamp(160px, 28vw, 220px);
+  flex-shrink: 0;
   position: relative;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.35s var(--ease-bounce), box-shadow 0.35s;
 }
 
-.gallery-item:hover {
-  transform: scale(1.03) translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  z-index: 2;
+.polaroid:hover {
+  transform: rotate(0deg) translateY(-10px) scale(1.05);
+  box-shadow:
+    0 16px 48px rgba(128,81,82,0.22),
+    0 4px 12px rgba(0,0,0,0.10);
+  z-index: 10;
 }
 
-.gallery-item img {
-  width: 100%; height: 100%;
+.polaroid-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.polaroid-img img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  transition: transform 0.6s var(--ease-smooth);
+  transition: transform 0.5s var(--ease-smooth);
+  display: block;
 }
 
-.gallery-item:hover img { transform: scale(1.08); }
+.polaroid:hover .polaroid-img img {
+  transform: scale(1.06);
+}
 
-.gallery-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(44,24,24,0.4) 0%, transparent 55%);
+.polaroid-caption {
+  text-align: center;
+  font-family: var(--font-script);
+  font-size: 1.3rem;
+  color: var(--dusty);
+  margin-top: 0.5rem;
+  line-height: 1;
+  user-select: none;
+}
+
+/* Entrada animada — cada polaroid cae desde arriba */
+.polaroid {
   opacity: 0;
-  transition: opacity 0.3s;
+  transform: rotate(var(--r, 2deg)) translateY(-30px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s var(--ease-bounce),
+    box-shadow 0.35s ease;
 }
 
-.gallery-item:hover .gallery-overlay { opacity: 1; }
+.polaroid.visible {
+  opacity: 1;
+  transform: rotate(var(--r, 2deg)) translateY(0);
+}
+
+.polaroid.visible:hover {
+  transform: rotate(0deg) translateY(-10px) scale(1.05);
+}
 
 /* ── LIGHTBOX ── */
 .lightbox {
