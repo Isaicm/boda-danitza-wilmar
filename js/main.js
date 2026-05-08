@@ -201,22 +201,51 @@ function bindEnvelopeTilt(envelope) {
     try {
       var AudioCtx = window.AudioContext || (/** @type {any} */(window)).webkitAudioContext;
       var ctx = new AudioCtx();
-      var notes = [1200, 1500, 1800, 2200, 1900, 2500, 1600, 2100, 2800, 1400];
-      notes.forEach(function(freq, i) {
-        var osc  = ctx.createOscillator();
-        var gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(freq * 1.3, ctx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.055);
-        gain.gain.linearRampToValueAtTime(0.18, ctx.currentTime + i * 0.055 + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.055 + 0.18);
-        osc.start(ctx.currentTime + i * 0.055);
-        osc.stop(ctx.currentTime + i * 0.055 + 0.2);
-      });
-      setTimeout(function(){ ctx.close(); }, 2000);
+      var dur = 1.4;
+      var now = ctx.currentTime;
+
+      // ── Ruido blanco filtrado → soplo suave ascendente ──
+      var bufSize = ctx.sampleRate * dur;
+      var buffer  = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+      var data    = buffer.getChannelData(0);
+      for (var i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1);
+
+      var noise  = ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      var filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(180, now);
+      filter.frequency.exponentialRampToValueAtTime(2400, now + dur * 0.7);
+      filter.Q.setValueAtTime(0.8, now);
+
+      var noiseGain = ctx.createGain();
+      noiseGain.gain.setValueAtTime(0, now);
+      noiseGain.gain.linearRampToValueAtTime(0.22, now + 0.08);
+      noiseGain.gain.linearRampToValueAtTime(0.18, now + 0.35);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(ctx.destination);
+      noise.start(now);
+      noise.stop(now + dur);
+
+      // ── Tono cálido de fondo ──
+      var osc   = ctx.createOscillator();
+      var oGain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.exponentialRampToValueAtTime(520, now + dur * 0.6);
+      oGain.gain.setValueAtTime(0, now);
+      oGain.gain.linearRampToValueAtTime(0.06, now + 0.1);
+      oGain.gain.exponentialRampToValueAtTime(0.001, now + dur * 0.85);
+      osc.connect(oGain);
+      oGain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + dur);
+
+      setTimeout(function(){ ctx.close(); }, (dur + 0.5) * 1000);
     } catch(e) {}
   }
 
