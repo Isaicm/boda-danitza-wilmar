@@ -197,6 +197,29 @@ function bindEnvelopeTilt(envelope) {
   spawnPetals(document.getElementById('envPetals'), 26, 'petalFallEnv');
   bindEnvelopeTilt(envelope);
 
+  function playSparkleSound() {
+    try {
+      var AudioCtx = window.AudioContext || (/** @type {any} */(window)).webkitAudioContext;
+      var ctx = new AudioCtx();
+      var notes = [1200, 1500, 1800, 2200, 1900, 2500, 1600, 2100, 2800, 1400];
+      notes.forEach(function(freq, i) {
+        var osc  = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.3, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.055);
+        gain.gain.linearRampToValueAtTime(0.18, ctx.currentTime + i * 0.055 + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.055 + 0.18);
+        osc.start(ctx.currentTime + i * 0.055);
+        osc.stop(ctx.currentTime + i * 0.055 + 0.2);
+      });
+      setTimeout(function(){ ctx.close(); }, 2000);
+    } catch(e) {}
+  }
+
   function openEnvelope() {
     if (opened) return;
     opened = true;
@@ -207,6 +230,9 @@ function bindEnvelopeTilt(envelope) {
       hint.style.opacity = '0';
       hint.style.pointerEvents = 'none';
     }
+
+    // Sonido de brillitos al abrir
+    playSparkleSound();
 
     // Música arranca desde el clic en el sobre (gesto del usuario)
     if (typeof window.startMusic === 'function') window.startMusic();
