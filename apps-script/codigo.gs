@@ -57,11 +57,11 @@ function guardarRSVP(p) {
 
   sheet.appendRow([
     new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' }),
-    p.nombre        || '',
-    p.asistencia    || '',
-    p.invitados     || '0',
-    p.nombresAcomp  || '',
-    p.mensaje       || ''
+    p.nombre       || '',
+    p.asistencia   || '',
+    p.invitados    || '0',
+    p.mensaje      || '',
+    p.nombresAcomp || ''
   ]);
 }
 
@@ -120,11 +120,11 @@ function doGet(e) {
 ───────────────────────────────────────────── */
 function testRSVP() {
   guardarRSVP({
-    nombre:        'TEST - Borrar',
-    asistencia:    'Sí, estaré ahí',
-    invitados:     '2',
-    nombresAcomp:  'Ana Prueba, Pedro Prueba',
-    mensaje:       'Fila de prueba — puedes borrarla'
+    nombre:       'TEST - Borrar',
+    asistencia:   'Sí, estaré ahí',
+    invitados:    '2',
+    mensaje:      'Fila de prueba — puedes borrarla',
+    nombresAcomp: 'Ana Prueba, Pedro Prueba'
   });
   Logger.log('✅ testRSVP OK — revisa el Sheet, debe haber una fila nueva.');
 }

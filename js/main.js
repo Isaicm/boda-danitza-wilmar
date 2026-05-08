@@ -630,8 +630,9 @@ function spawnSobresRain() {
     if (nombresGrp) nombresGrp.style.display = n > 0 ? '' : 'none';
   }
   if (invField) {
-    invField.addEventListener('input', toggleNombres);
+    invField.addEventListener('input',  toggleNombres);
     invField.addEventListener('change', toggleNombres);
+    invField.addEventListener('keyup',  toggleNombres);
   }
 
   // Aplicar límite de acompañantes si viene en la URL
