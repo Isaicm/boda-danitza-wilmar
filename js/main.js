@@ -201,51 +201,64 @@ function bindEnvelopeTilt(envelope) {
     try {
       var AudioCtx = window.AudioContext || (/** @type {any} */(window)).webkitAudioContext;
       var ctx = new AudioCtx();
-      var dur = 1.4;
       var now = ctx.currentTime;
 
-      // ── Ruido blanco filtrado → soplo suave ascendente ──
-      var bufSize = ctx.sampleRate * dur;
-      var buffer  = ctx.createBuffer(1, bufSize, ctx.sampleRate);
-      var data    = buffer.getChannelData(0);
-      for (var i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1);
+      function makeNoise(duration) {
+        var len  = Math.ceil(ctx.sampleRate * duration);
+        var buf  = ctx.createBuffer(1, len, ctx.sampleRate);
+        var d    = buf.getChannelData(0);
+        for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+        var src = ctx.createBufferSource();
+        src.buffer = buf;
+        return src;
+      }
 
-      var noise  = ctx.createBufferSource();
-      noise.buffer = buffer;
+      // ── Fase 1: chasquido del sello (0 – 0.08s) ──
+      var snap     = makeNoise(0.1);
+      var snapHp   = ctx.createBiquadFilter();
+      snapHp.type  = 'highpass';
+      snapHp.frequency.value = 3000;
+      var snapGain = ctx.createGain();
+      snapGain.gain.setValueAtTime(0.55, now);
+      snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+      snap.connect(snapHp); snapHp.connect(snapGain); snapGain.connect(ctx.destination);
+      snap.start(now); snap.stop(now + 0.1);
 
-      var filter = ctx.createBiquadFilter();
-      filter.type = 'bandpass';
-      filter.frequency.setValueAtTime(180, now);
-      filter.frequency.exponentialRampToValueAtTime(2400, now + dur * 0.7);
-      filter.Q.setValueAtTime(0.8, now);
+      // ── Fase 2: papel deslizándose (0.05 – 0.55s) ──
+      var slide    = makeNoise(0.6);
+      var slideBp  = ctx.createBiquadFilter();
+      slideBp.type = 'bandpass';
+      slideBp.frequency.setValueAtTime(1800, now + 0.05);
+      slideBp.frequency.linearRampToValueAtTime(800, now + 0.5);
+      slideBp.Q.value = 0.6;
+      var slideGain = ctx.createGain();
+      slideGain.gain.setValueAtTime(0, now + 0.05);
+      slideGain.gain.linearRampToValueAtTime(0.35, now + 0.12);
+      slideGain.gain.linearRampToValueAtTime(0.28, now + 0.32);
+      slideGain.gain.exponentialRampToValueAtTime(0.001, now + 0.58);
+      slide.connect(slideBp); slideBp.connect(slideGain); slideGain.connect(ctx.destination);
+      slide.start(now + 0.05); slide.stop(now + 0.65);
 
-      var noiseGain = ctx.createGain();
-      noiseGain.gain.setValueAtTime(0, now);
-      noiseGain.gain.linearRampToValueAtTime(0.22, now + 0.08);
-      noiseGain.gain.linearRampToValueAtTime(0.18, now + 0.35);
-      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+      // ── Fase 3: crujido de arruga al abrirse (0.25 – 0.55s) ──
+      var crinkle     = makeNoise(0.35);
+      var crinkleLfo  = ctx.createOscillator();   // modulación de amplitud
+      var crinkleMod  = ctx.createGain();
+      crinkleLfo.frequency.value = 28;
+      crinkleMod.gain.value = 0.06;
+      crinkleLfo.connect(crinkleMod);
+      var crinkleHp   = ctx.createBiquadFilter();
+      crinkleHp.type  = 'highpass';
+      crinkleHp.frequency.value = 4500;
+      var crinkleGain = ctx.createGain();
+      crinkleGain.gain.setValueAtTime(0, now + 0.25);
+      crinkleGain.gain.linearRampToValueAtTime(0.18, now + 0.32);
+      crinkleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.58);
+      crinkleMod.connect(crinkleGain.gain);
+      crinkle.connect(crinkleHp); crinkleHp.connect(crinkleGain); crinkleGain.connect(ctx.destination);
+      crinkleLfo.start(now + 0.25); crinkleLfo.stop(now + 0.6);
+      crinkle.start(now + 0.25);    crinkle.stop(now + 0.62);
 
-      noise.connect(filter);
-      filter.connect(noiseGain);
-      noiseGain.connect(ctx.destination);
-      noise.start(now);
-      noise.stop(now + dur);
-
-      // ── Tono cálido de fondo ──
-      var osc   = ctx.createOscillator();
-      var oGain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(220, now);
-      osc.frequency.exponentialRampToValueAtTime(520, now + dur * 0.6);
-      oGain.gain.setValueAtTime(0, now);
-      oGain.gain.linearRampToValueAtTime(0.06, now + 0.1);
-      oGain.gain.exponentialRampToValueAtTime(0.001, now + dur * 0.85);
-      osc.connect(oGain);
-      oGain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + dur);
-
-      setTimeout(function(){ ctx.close(); }, (dur + 0.5) * 1000);
+      setTimeout(function(){ ctx.close(); }, 1500);
     } catch(e) {}
   }
 
