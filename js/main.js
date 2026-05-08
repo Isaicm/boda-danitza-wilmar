@@ -8,7 +8,7 @@
 // ── GOOGLE APPS SCRIPT URL ────────────────────────────────
 // Reemplaza esta URL con la URL de tu Web App desplegada
 // Instrucciones en apps-script/codigo.gs
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyvZ8Djt3nUka7UhW6JNB0FnQoRphjoMNRueZjrz25pec3yAz_PafjQp3I_MiyMTcex/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx10aFQtdUDrI9jSX0fB0Y123meBGDD6DTPSGduUNVECrH0ZdBpTozC57dAbn6YHo0t/exec';
 
 // ── WEDDING DATE (Colombia UTC-5, sin DST) ────────────────
 const WEDDING_DATE = new Date('2026-08-09T17:00:00-05:00');
