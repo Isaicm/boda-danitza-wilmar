@@ -610,6 +610,67 @@ function spawnSobresRain() {
 }
 
 // ═══════════════════════════════════════════════════════════
+// 7b. MODAL ÉXITO RSVP
+// ═══════════════════════════════════════════════════════════
+function showRSVPModal() {
+  var modal     = document.getElementById('rsvpModal');
+  var sparksWrp = document.getElementById('rsvpModalSparks');
+  var heartsWrp = document.getElementById('rsvpModalHearts');
+  if (!modal) return;
+
+  modal.classList.add('active');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+
+  // Brillitos
+  var sparkColors = ['#C9A96E','#ffd700','#fff','#F3B6B6','#E0A2A2'];
+  for (var i = 0; i < 28; i++) {
+    (function(idx) {
+      var delay    = idx * 80 + Math.random() * 300;
+      var dur      = 800 + Math.random() * 700;
+      var size     = 2 + Math.random() * 4;
+      var left     = 5 + Math.random() * 90;
+      var top      = 30 + Math.random() * 60;
+      var color    = sparkColors[Math.floor(Math.random() * sparkColors.length)];
+      var el = document.createElement('div');
+      el.className = 'modal-spark';
+      el.style.cssText = 'width:'+size+'px;height:'+size+'px;left:'+left+'%;top:'+top+'%;background:'+color+';animation-duration:'+dur+'ms;animation-delay:'+delay+'ms;box-shadow:0 0 '+(size*2)+'px '+color;
+      sparksWrp.appendChild(el);
+      setTimeout(function(){ el.remove(); }, delay + dur + 50);
+    })(i);
+  }
+
+  // Corazones flotantes
+  var heartSymbols = ['♡','♥','❤','💕','🤍'];
+  for (var j = 0; j < 12; j++) {
+    (function(idx) {
+      var delay = idx * 120 + Math.random() * 400;
+      var dur   = 1000 + Math.random() * 800;
+      var left  = 5 + Math.random() * 90;
+      var top   = 40 + Math.random() * 50;
+      var sym   = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+      var el = document.createElement('div');
+      el.className = 'modal-heart';
+      el.textContent = sym;
+      el.style.cssText = 'left:'+left+'%;top:'+top+'%;animation-duration:'+dur+'ms;animation-delay:'+delay+'ms;opacity:0;font-size:'+(0.9+Math.random()*0.8)+'rem;color:rgba(195,136,136,0.85)';
+      heartsWrp.appendChild(el);
+      setTimeout(function(){ el.remove(); }, delay + dur + 50);
+    })(j);
+  }
+
+  // Cerrar
+  var closeBtn = document.getElementById('rsvpModalClose');
+  var backdrop = modal.querySelector('.rsvp-modal-backdrop');
+  function closeModal() {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  if (closeBtn) closeBtn.addEventListener('click', closeModal, { once: true });
+  if (backdrop) backdrop.addEventListener('click', closeModal, { once: true });
+}
+
+// ═══════════════════════════════════════════════════════════
 // 7. RSVP → Google Sheets via Apps Script
 // ═══════════════════════════════════════════════════════════
 (function initRSVP() {
@@ -708,13 +769,10 @@ function spawnSobresRain() {
       });
 
       form.reset();
-      msgSuccess.classList.remove('hidden');
-      if (typeof gsap !== 'undefined') {
-        gsap.from(msgSuccess, { y: 12, opacity: 0, duration: 0.55 });
-      }
       btnText.textContent = 'Enviado ✓';
       btnText.classList.remove('hidden');
       btnLoading.classList.add('hidden');
+      showRSVPModal();
 
     } catch (err) {
       msgError.classList.remove('hidden');
