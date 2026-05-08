@@ -9,8 +9,8 @@
  *
  * 2. Renombra la primera hoja como "Confirmaciones"
  *
- * 3. En la fila 1, agrega estos encabezados en las columnas A-F:
- *    Timestamp | Nombre | Email | Asistencia | Acompañantes | Mensaje
+ * 3. En la fila 1, agrega estos encabezados en las columnas A-G:
+ *    Timestamp | Nombre | Asistencia | Acompañantes | Nombres Acompañantes | Mensaje
  *
  * 4. En el menú del Sheet: Extensiones → Apps Script
  *
@@ -57,11 +57,11 @@ function guardarRSVP(p) {
 
   sheet.appendRow([
     new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' }),
-    p.nombre     || '',
-    p.email      || '',
-    p.asistencia || '',
-    p.invitados  || '0',
-    p.mensaje    || ''
+    p.nombre        || '',
+    p.asistencia    || '',
+    p.invitados     || '0',
+    p.nombresAcomp  || '',
+    p.mensaje       || ''
   ]);
 }
 
@@ -120,11 +120,11 @@ function doGet(e) {
 ───────────────────────────────────────────── */
 function testRSVP() {
   guardarRSVP({
-    nombre:     'TEST - Borrar',
-    email:      'test@prueba.com',
-    asistencia: 'si',
-    invitados:  '2',
-    mensaje:    'Fila de prueba — puedes borrarla'
+    nombre:        'TEST - Borrar',
+    asistencia:    'Sí, estaré ahí',
+    invitados:     '2',
+    nombresAcomp:  'Ana Prueba, Pedro Prueba',
+    mensaje:       'Fila de prueba — puedes borrarla'
   });
   Logger.log('✅ testRSVP OK — revisa el Sheet, debe haber una fila nueva.');
 }
