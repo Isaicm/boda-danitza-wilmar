@@ -481,8 +481,8 @@ body   {
 
 .envelope-to {
   font-family: var(--font-script);
-  font-size: clamp(1rem, 3.5vw, 1.35rem);
-  color: rgba(92, 58, 58, 0.82);
+  font-size: clamp(1.15rem, 4vw, 1.6rem);
+  color: rgba(80, 40, 40, 0.9);
   letter-spacing: 0.02em;
   text-align: center;
   padding: 0 1rem;
@@ -491,6 +491,8 @@ body   {
   opacity: 0;
   transform: translateY(-4px);
   transition: opacity 0.6s ease, transform 0.6s ease;
+  text-shadow: 0 1px 6px rgba(160, 80, 80, 0.18);
+  font-weight: 600;
 }
 
 .envelope-to.visible {
@@ -882,11 +884,13 @@ body   {
 
 .hero-guest-name {
   font-family: var(--font-script);
-  font-size: clamp(1.6rem, 4vw, 2.2rem);
-  color: rgba(237,216,216,0.92);
-  letter-spacing: 0.04em;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 2px 20px rgba(201,123,138,0.35);
+  font-size: clamp(2rem, 5.5vw, 3rem);
+  color: #f9dede;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.6rem;
+  text-shadow:
+    0 0 18px rgba(243,182,182,0.6),
+    0 2px 30px rgba(201,123,138,0.45);
 }
 
 .hero-eyebrow {
