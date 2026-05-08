@@ -622,15 +622,27 @@ function spawnSobresRain() {
 
   if (!form) return;
 
+  // Mostrar/ocultar campo de nombres de acompañantes según el número
+  const invField   = document.getElementById('invitados');
+  const nombresGrp = document.getElementById('nombresAcompGroup');
+  function toggleNombres() {
+    var n = parseInt(invField ? invField.value : '0', 10) || 0;
+    if (nombresGrp) nombresGrp.style.display = n > 0 ? '' : 'none';
+  }
+  if (invField) {
+    invField.addEventListener('input', toggleNombres);
+    invField.addEventListener('change', toggleNombres);
+  }
+
   // Aplicar límite de acompañantes si viene en la URL
   if (MAX_GUESTS !== null) {
-    const invField = document.getElementById('invitados');
-    const invHint  = document.getElementById('invitadosHint');
+    const invHint = document.getElementById('invitadosHint');
     if (invField) {
       invField.max = MAX_GUESTS;
       if (MAX_GUESTS === 0) {
         invField.value = '0';
         invField.disabled = true;
+        if (nombresGrp) nombresGrp.style.display = 'none';
       }
     }
     if (invHint) {
@@ -674,10 +686,11 @@ function spawnSobresRain() {
     msgError.classList.add('hidden');
 
     const data = {
-      nombre: form.nombre.value.trim(),
-      asistencia: form.asistencia.value,
-      invitados: form.invitados.value || '0',
-      mensaje: form.mensaje.value.trim()
+      nombre:       form.nombre.value.trim(),
+      asistencia:   form.asistencia.value,
+      invitados:    form.invitados.value || '0',
+      nombresAcomp: (form.nombresAcomp ? form.nombresAcomp.value.trim() : ''),
+      mensaje:      form.mensaje.value.trim()
     };
 
     try {

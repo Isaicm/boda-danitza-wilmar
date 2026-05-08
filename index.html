@@ -279,7 +279,7 @@
     <!-- Contenido central -->
     <div class="hero-inner">
       <p class="hero-guest-name" id="heroGuestName" style="display:none"></p>
-      <p class="hero-eyebrow">— Con inmensa alegría anuncian —</p>
+      <p class="hero-eyebrow">— Con inmensa alegría anuncian su matrimonio —</p>
 
       <div class="hero-names-block">
         <h1 class="hero-name" id="heroName1">Wilmar</h1>
@@ -372,7 +372,7 @@
         <div class="schedule-item" data-aos="fade-right" data-aos-delay="320">
           <div class="sched-time-wrap"><span class="sched-time">7:00 PM</span></div>
           <div class="sched-connector"><div class="sched-dot"></div></div>
-          <div class="sched-info"><h3>Cena y Celebración</h3><p>¡Música, baile y felicidad!</p></div>
+          <div class="sched-info"><h3>Cena y Celebración</h3><p>¡Música y felicidad!</p></div>
         </div>
       </div>
     </div>
@@ -413,7 +413,7 @@
     <div class="section-inner">
       <p class="section-eyebrow" data-aos="fade-up">Elegancia</p>
       <h2 class="section-title" data-aos="fade-up" data-aos-delay="80">Código de Vestimenta</h2>
-      <p class="dresscode-subtitle" data-aos="fade-up" data-aos-delay="120">Etiqueta Formal · Traje Elegante</p>
+      <p class="dresscode-subtitle" data-aos="fade-up" data-aos-delay="120">Etiqueta Formal · Vestimenta Elegante</p>
 
       <blockquote class="dresscode-note" data-aos="fade-up" data-aos-delay="160">
         "Deseamos que todos luzcan radiantes. Con el fin de armonizar con nuestra decoración,
@@ -422,20 +422,6 @@
       </blockquote>
 
       <div class="dresscode-palette" data-aos="fade-up" data-aos-delay="200">
-
-        <div class="palette-block">
-          <p class="palette-label">✓ Tonos bienvenidos</p>
-          <div class="palette-swatches">
-            <div class="palette-swatch" style="--c:#1A1A2E"><span>Azul noche</span></div>
-            <div class="palette-swatch" style="--c:#3D2020"><span>Chocolate</span></div>
-            <div class="palette-swatch" style="--c:#4A3728"><span>Café oscuro</span></div>
-            <div class="palette-swatch" style="--c:#C9A96E"><span>Champagne</span></div>
-            <div class="palette-swatch" style="--c:#5A6B4A"><span>Verde botella</span></div>
-            <div class="palette-swatch" style="--c:#805152"><span>Mauve rosa</span></div>
-          </div>
-        </div>
-
-        <div class="palette-divider"></div>
 
         <div class="palette-block">
           <p class="palette-label palette-label-no">✕ Reservado para la novia</p>
@@ -483,7 +469,7 @@
     <div class="section-inner">
       <p class="section-eyebrow" data-aos="fade-up">Asistencia</p>
       <h2 class="section-title" data-aos="fade-up" data-aos-delay="80">Confirmar Asistencia</h2>
-      <p class="rsvp-sub" data-aos="fade-up" data-aos-delay="120">Confirma antes del <strong>10 de Julio de 2026</strong></p>
+      <p class="rsvp-sub" data-aos="fade-up" data-aos-delay="120">Confirmación antes del <strong>1 de Junio de 2026</strong></p>
       <form class="rsvp-form" id="rsvpForm" novalidate data-aos="fade-up" data-aos-delay="160">
         <div class="form-row">
           <div class="form-group">
@@ -501,10 +487,15 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="invitados">Acompañantes</label>
+            <label for="invitados">Número de acompañantes</label>
             <input type="number" id="invitados" name="invitados" min="0" max="5" placeholder="0" />
             <p class="field-hint" id="invitadosHint" style="display:none"></p>
           </div>
+        </div>
+        <div class="form-group" id="nombresAcompGroup" style="display:none">
+          <label for="nombresAcomp">Nombres completos de los acompañantes</label>
+          <textarea id="nombresAcomp" name="nombresAcomp" rows="3" placeholder="Ej: Carlos Pérez, Laura Gómez…"></textarea>
+          <p class="field-hint">Por favor escribe el nombre completo de cada acompañante.</p>
         </div>
         <div class="form-group">
           <label for="mensaje">Mensaje para los novios <span class="optional">(opcional)</span></label>
@@ -514,7 +505,7 @@
           <span class="btn-text">Enviar Confirmación</span>
           <span class="btn-loading hidden">Enviando...</span>
         </button>
-        <p class="form-success hidden" id="formSuccess">¡Gracias! Recibimos tu confirmación. ¡Nos vemos el 9 de agosto!</p>
+        <p class="form-success hidden" id="formSuccess">¡Gracias por confirmar! Tu lugar está reservado con mucho cariño. Si en algún momento tus planes cambian, te pedimos con toda amabilidad que nos lo hagas saber — los cupos son limitados y quisiéramos poder ofrecérselo a alguien más. ¡Con amor los esperamos el 9 de agosto!</p>
         <p class="form-error hidden" id="formError">Error al enviar. Por favor intenta de nuevo.</p>
       </form>
     </div>
